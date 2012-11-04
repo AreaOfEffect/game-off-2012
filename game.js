@@ -1,6 +1,12 @@
 window.onload = function () {
+	var STAGE_WIDTH = 700;
+	var STAGE_HEIGHT = 600;
+	
+	var CLOUD_NUM = 4;
+
+
     //start crafty
-    Crafty.init(700, 600);
+    Crafty.init(STAGE_WIDTH, STAGE_HEIGHT);
     //Crafty.canvas.init();
     
     
@@ -10,13 +16,13 @@ window.onload = function () {
 //the loading screen that will display while our assets load
 Crafty.scene("loading", function () {
     //load takes an array of assets and a callback when complete
-    Crafty.load(["sprites.png"], function () {
+    Crafty.load(["imgs/forky.png","imgs/cloud1.png"], function () {
         Crafty.scene("main"); //when everything is loaded, run the main scene
     });
 
     //black background with some loading text
-    Crafty.background("#000");
-    Crafty.e("2D, DOM, Text").attr({ w: 100, h: 20, x: 150, y: 120 })
+    Crafty.background("#a3e2ff");
+    Crafty.e("2D, DOM, Text").attr({ w: 700, h: 20, x: 0, y: 350 })
             .text("Loading")
             .css({ "text-align": "center" });
 });
@@ -26,63 +32,33 @@ Crafty.scene("loading");
 
 
 Crafty.scene("main", function () {
-    generateWorld();
+    generateClouds();
+	
+	Crafty.e("Forky, 2D, DOM, Image, Multiway")
+	.image("imgs/forky.png")
+	.attr({ x: 580, y: 100, z: 2})
+	.multiway(5, { UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180 });
 
 });
 
-//turn the sprite map into usable components
-Crafty.sprite(16, "sprites.png", {
-    grass1: [0, 0],
-    grass2: [1, 0],
-    grass3: [2, 0],
-    grass4: [3, 0],
-    flower: [0, 1],
-    bush1: [0, 2],
-    bush2: [1, 2],
-    player: [0, 3],
-    enemy: [0, 3],
-    banana: [4, 0],
-    empty: [4, 0]
-});
-
-
-//method to generate the map
-function generateWorld() {
-    //loop through all tiles
-    for (var i = 0; i < 25; i++) {
-        for (var j = 0; j < 21; j++) {
-
-            //place grass on all tiles
-            grassType = Crafty.math.randomInt(1, 4);
-            Crafty.e("2D, DOM, grass" + grassType)
-                .attr({ x: i * 16, y: j * 16, z:1 });
-                
-            //create a fence of bushes
-if(i === 0 || i === 24 || j === 0 || j === 20)
-    Crafty.e("2D, DOM, solid, bush" + Crafty.math.randomInt(1, 2))
-    .attr({ x: i * 16, y: j * 16, z: 2 });
-    
-    //generate some nice flowers within the boundaries of the outer bushes
-if (i > 0 && i < 24 && j > 0 && j < 20
-        && Crafty.math.randomInt(0, 50) > 30
-        && !(i === 1 && j >= 16)
-        && !(i === 23 && j <= 4)) {
-    var f = Crafty.e("2D, DOM, flower, solid, SpriteAnimation, explodable")
-            .attr({ x: i * 16, y: j * 16, z: 1000 })
-            .animate("wind", 0, 1, 3)
-            .animate('wind', 40, -1)
-            .bind('explode', function() {
-                this.destroy();
-            });
+function generateClouds() {
+	for (var cloud=0; cloud < CLOUD_NUM; cloud++) {
+		grassType = Crafty.math.randomInt(1, 4);
+            Crafty.e("2D, DOM, Image")
+                .attr({ x: Crafty.math.randomInt(-50, STAGE_WIDTH+50), y: Crafty.math.randomInt(-300, -50), z: 1 })
+				.image("imgs/cloud1.png")
+				.bind('EnterFrame', function () {
+					this.y += 2;
+					if (this.y > STAGE_HEIGHT) {
+						this.y = Crafty.math.randomInt(-300, -50);
+						this.x = Crafty.math.randomInt(-50, STAGE_WIDTH+50);
+					}
+				});
+	}
 }
- //grid of bushes
-            if((i % 2 === 0) && (j % 2 === 0)) {
-                Crafty.e("2D, DOM, solid, bush1")
-                    .attr({x: i * 16, y: j * 16, z: 2000})
-            }
-        }
-    }
-}
+
+
+
     
     
 };
