@@ -1,6 +1,6 @@
 window.onload = function () {
     //start crafty
-    Crafty.init(400, 336);
+    Crafty.init(700, 600);
     //Crafty.canvas.init();
     
     
@@ -70,7 +70,7 @@ if (i > 0 && i < 24 && j > 0 && j < 20
     var f = Crafty.e("2D, DOM, flower, solid, SpriteAnimation, explodable")
             .attr({ x: i * 16, y: j * 16, z: 1000 })
             .animate("wind", 0, 1, 3)
-            .animate('wind', 80, -1)
+            .animate('wind', 40, -1)
             .bind('explode', function() {
                 this.destroy();
             });
