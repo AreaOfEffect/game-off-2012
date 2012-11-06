@@ -17,7 +17,7 @@ window.onload = function () {
 Crafty.scene("loading", function () {
     //load takes an array of assets and a callback when complete
     Crafty.load(["imgs/forky.png","imgs/cloud1.png"], function () {
-        Crafty.scene("main"); //when everything is loaded, run the main scene
+        Crafty.scene("title"); //when everything is loaded, run the main scene
     });
 
     //black background with some loading text
@@ -31,13 +31,28 @@ Crafty.scene("loading", function () {
 Crafty.scene("loading");
 
 
+
+Crafty.scene("title", function () {
+	
+	Crafty.e("2D, DOM, Text, Mouse").attr({ w: 700, h: 20, x: 0, y: 350 })
+				.text("PLAY GAME")
+				.css({ "text-align": "center", "cursor": "pointer" })
+				.bind('Click', function () {
+					Crafty.scene("main");
+				});
+});
+
+
+
+
 Crafty.scene("main", function () {
     generateClouds();
 	
-	Crafty.e("Forky, 2D, DOM, Image, Multiway")
+	Crafty.e("Forky, 2D, DOM, Image, OnJetpack")
 	.image("imgs/forky.png")
 	.attr({ x: 580, y: 100, z: 2})
-	.multiway(5, { UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180 });
+	.configMovement(0.1,10);
+	//.multiway(5, { UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180 });
 
 });
 
