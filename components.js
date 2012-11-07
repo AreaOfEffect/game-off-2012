@@ -19,7 +19,9 @@ Crafty.c("StraightBullets", {
 // ENEMIES
 Crafty.c("SimpleEnemy", {	
 	init: function () {
-		this.delay(this.fireWeapon,1000);
+		this.timeout(function() {
+             this.fireWeapon();
+			}, 1000);
 		this.requires("Collision")
 			.onHit("Forky", function() {
 				console.log("ouch, bullet");
@@ -42,13 +44,13 @@ Crafty.c("SimpleEnemy", {
 				.origin("center")
 				.attr({ x: this.x, y: this.y, z: 4})
 				.setSpeed(5);
-		this.delay(this.fireWeapon,1000);
+		this.timeout(function() {
+             this.fireWeapon();
+			}, 1000);
 	}
 });
 
-function fireWeapon() {
 
-}
 
 // MOVEMENT
 Crafty.c("OnJetpack", {
