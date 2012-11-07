@@ -1,3 +1,56 @@
+// PROJECTILES
+Crafty.c("StraightBullets", {
+	init: function() {
+		this.requires("Collision")
+			.onHit("Forky", function() {
+				console.log("ouch, bullet");
+			});
+	},
+	
+	setSpeed: function(speed) {
+		this.bind('EnterFrame', function () {
+			this.y += speed;
+			if (this.y > STAGE_HEIGHT)
+				this.destroy();
+		});
+	}
+});
+
+// ENEMIES
+Crafty.c("SimpleEnemy", {	
+	init: function () {
+		this.delay(this.fireWeapon,1000);
+		this.requires("Collision")
+			.onHit("Forky", function() {
+				console.log("ouch, bullet");
+			});
+	},
+	
+	setSpeed: function(speed) {
+		this.bind('EnterFrame', function () {
+			this.y += speed;
+			
+			if (this.y > STAGE_HEIGHT) {
+				this.destroy();
+			}
+		});
+	},
+	
+	fireWeapon: function() {
+		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets")
+				.image("imgs/bullet.png")
+				.origin("center")
+				.attr({ x: this.x, y: this.y, z: 4})
+				.setSpeed(5);
+		this.delay(this.fireWeapon,1000);
+	}
+});
+
+function fireWeapon() {
+
+}
+
+// MOVEMENT
 Crafty.c("OnJetpack", {
 	init: function () {
 		this.requires('Keyboard');
