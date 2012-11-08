@@ -18,7 +18,7 @@ window.onload = function () {
 	//the loading screen that will display while our assets load
 	Crafty.scene("loading", function () {
 		//load takes an array of assets and a callback when complete
-		Crafty.load(["imgs/*.png"], function () {
+		Crafty.load(["imgs/bullet.png","imgs/cloud1.png","imgs/enemy.png","imgs/explosion.png","imgs/forky.png"], function () {
 			Crafty.scene("title"); //when everything is loaded, run the main scene
 		});
 
