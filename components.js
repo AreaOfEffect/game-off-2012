@@ -3,7 +3,14 @@ Crafty.c("StraightBullets", {
 	init: function() {
 		this.requires("Collision")
 			.onHit("Forky", function() {
-				console.log("ouch, bullet");
+				Crafty.e("2D, DOM, exp, SpriteAnimation")
+					.attr({x: this.x, y: this.y, z: 10})
+					.animate("boom", [[0,0],[1,0],[2,0],[3,0],[0,1],[1,1],[2,1],[3,1],[0,2],[1,2],[2,2],[3,2],[0,3],[1,3],[2,3],[3,3]])
+					.animate("boom", 60, 0)
+					.bind("AnimationEnd", function(reelId) {
+						this.destroy();
+					});
+				this.destroy();
 			});
 	},
 	
