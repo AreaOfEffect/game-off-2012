@@ -18,7 +18,7 @@ window.onload = function () {
 	//the loading screen that will display while our assets load
 	Crafty.scene("loading", function () {
 		//load takes an array of assets and a callback when complete
-		Crafty.load(["imgs/bullet.png","imgs/cloud1.png","imgs/enemy.png","imgs/explosion.png","imgs/forky.png"], function () {
+		Crafty.load(["imgs/bullet.png","imgs/cloud1.png","imgs/enemy.png","imgs/explosion.png","imgs/forky.png", "imgs/burger_sheet.png"], function () {
 			Crafty.scene("title"); //when everything is loaded, run the main scene
 		});
 
@@ -48,6 +48,7 @@ window.onload = function () {
 
 	
 	Crafty.sprite(64, "imgs/explosion.png", {exp: [0,0]});
+	Crafty.sprite(120, "imgs/burger_sheet.png", {burg:[0,0]});
 
 	//MAIN GAME
 	Crafty.scene("main", function () {
@@ -89,9 +90,10 @@ window.onload = function () {
 	}
 
 	function spawnSimpleEnemy() {
-		Crafty.e("Enemy, 2D, DOM, Image, SimpleEnemy")
-		.image("imgs/enemy.png")
-		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})
+		Crafty.e("Enemy, 2D, DOM, burg, SpriteAnimation, SimpleEnemy")
+			.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
+			.animate("burger", [[0,0],[1,0],[2,0],[3,0],[4,0], [5,0], [6,0], [7,0], [8,0], [9,0], [10,0], [11,0], [12,0], [13,0], [14,0], [15,0], [16,0], [17,0], [18,0], [19,0], [20,0], [21,0], [22,0]] )
+			.animate("burger", 60, -1)
 		.setSpeed(1.5);
 		//this.delay(arguments.callee, Crafty.math.randomInt(200, 3000));
 	}
