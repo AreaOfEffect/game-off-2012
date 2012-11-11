@@ -60,7 +60,10 @@ window.onload = function () {
 		.configMovement(0.1,10);
 		
 		Crafty.e("SimpleEnemyFactory, Delay")
-			.delay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
+			.delay(function () {
+				spawnSimpleEnemy();
+				this.delay();
+			}, Crafty.math.randomInt(200, 3000));
 		
 
 	});
@@ -87,12 +90,20 @@ window.onload = function () {
 	}
 
 	function spawnSimpleEnemy() {
+<<<<<<< HEAD
 		var e =	Crafty.e("Enemy, 2D, DOM, burg, SpriteAnimation, SimpleEnemy, Delay")
 			.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
 			.animate("burger", [[0,0],[1,0],[2,0],[3,0],[4,0], [5,0], [6,0], [7,0], [8,0], [9,0], [10,0], [11,0], [12,0], [13,0], [14,0], [15,0], [16,0], [17,0], [18,0], [19,0], [20,0], [21,0], [22,0]] )
 			.animate("burger", 60, -1)
 			.setSpeed(1.5);
 		e.delay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
+=======
+		Crafty.e("Enemy, 2D, DOM, Image, SimpleEnemy")
+		.image("imgs/enemy.png")
+		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})
+		.setSpeed(1.5);
+		//this.delay(arguments.callee, Crafty.math.randomInt(200, 3000));
+>>>>>>> Revert "jojojojoj"
 	}
 
     
