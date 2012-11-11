@@ -49,11 +49,46 @@ Crafty.c("SimpleEnemy", {
 	fireWeapon: function() {
 		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets")
 				.image("imgs/bullet.png")
-				.origin("center")
 				.attr({ x: this.x, y: this.y, z: 4})
 				.setSpeed(0,5);
 		this.realDelay(this.fireWeapon, 1000);
 	}
+});
+Crafty.c("RandomMover", {
+	init: function () {
+		this.requires("RealDelay");
+		this.requires("Tween");
+		this.realDelay(this.nextLocation, 1000);
+		this.requires("Collision")
+			.onHit("Forky", function() {
+				console.log("ouch, bullet");
+			});
+	},
+	
+	nextLocation: function() {
+		this.tween({x: Crafty.math.randomInt(10, STAGE_WIDTH), y: Crafty.math.randomInt(10, STAGE_HEIGHT/2)}, 40);
+		this.bind("TweenEnd", function () {
+			this.realDelay(this.fireWeapon, 100);
+		});
+		this.realDelay(this.nextLocation, 3000);		
+	},
+	
+	fireWeapon: function () {
+		// 3 bullet spread
+		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets")
+				.image("imgs/bullet.png")
+				.attr({ x: this.x, y: this.y, z: 4})
+				.setSpeed(0,5);
+		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets")
+				.image("imgs/bullet.png")
+				.attr({ x: this.x, y: this.y, z: 4})
+				.setSpeed(-2,5);
+		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets")
+				.image("imgs/bullet.png")
+				.attr({ x: this.x, y: this.y, z: 4})
+				.setSpeed(2,5);
+	}
+	
 });
 
 

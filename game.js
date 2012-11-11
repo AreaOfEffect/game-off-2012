@@ -19,7 +19,7 @@ window.onload = function () {
 	Crafty.scene("loading", function () {
 		//load takes an array of assets and a callback when complete
 		Crafty.load(["imgs/bullet.png","imgs/cloud1.png","imgs/enemy.png","imgs/explosion.png","imgs/forky.png", "imgs/burger_sheet.png"], function () {
-			Crafty.scene("title"); //when everything is loaded, run the main scene
+			Crafty.scene("main"); //when everything is loaded, run the main scene
 		});
 
 		//black background with some loading text
@@ -59,8 +59,8 @@ window.onload = function () {
 		.attr({ x: 580, y: 100, z: 2})
 		.configMovement(0.1,10);
 		
-		Crafty.e("SimpleEnemyFactory, Delay")
-			.delay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
+		Crafty.e("SimpleEnemyFactory, RealDelay")
+			.realDelay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
 		
 
 	});
@@ -87,12 +87,12 @@ window.onload = function () {
 	}
 
 	function spawnSimpleEnemy() {
-		var e =	Crafty.e("Enemy, 2D, DOM, burg, SpriteAnimation, SimpleEnemy, Delay")
+		var e =	Crafty.e("Enemy, 2D, DOM, burg, SpriteAnimation, RandomMover")
 			.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
-			.animate("burger", [[0,0],[1,0],[2,0],[3,0],[4,0], [5,0], [6,0], [7,0], [8,0], [9,0], [10,0], [11,0], [12,0], [13,0], [14,0], [15,0], [16,0], [17,0], [18,0], [19,0], [20,0], [21,0], [22,0]] )
-			.animate("burger", 60, -1)
-			.setSpeed(1.5);
-		e.delay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
+			.animate("burger", 0, 0, 22)
+			.animate("burger", 60, -1);
+			//.setSpeed(1.5);
+		//e.realDelay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
 	}
 
     
