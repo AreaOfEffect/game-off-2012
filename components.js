@@ -14,11 +14,10 @@ Crafty.c("StraightBullets", {
 			});
 	},
 	
-	setSpeed: function(speedX, speedY) {
+	setSpeed: function(speed) {
 		this.bind('EnterFrame', function () {
-			this.y += speedY;
-			this.x += speedX;
-			if (this.y > STAGE_HEIGHT || this.y < 0 || this.x < 0 || this.x > STAGE_WIDTH)
+			this.y += speed;
+			if (this.y > STAGE_HEIGHT)
 				this.destroy();
 		});
 	}
@@ -27,8 +26,9 @@ Crafty.c("StraightBullets", {
 // ENEMIES
 Crafty.c("SimpleEnemy", {	
 	init: function () {
-		this.requires("RealDelay");
-		this.realDelay(this.fireWeapon, 1000);
+		this.timeout(function() {
+             this.fireWeapon();
+			}, 1000);
 		this.requires("Collision")
 			.onHit("Forky", function() {
 				console.log("ouch, bullet");
@@ -43,7 +43,6 @@ Crafty.c("SimpleEnemy", {
 				this.destroy();
 			}
 		});
-		return this;
 	},
 	
 	fireWeapon: function() {
@@ -51,8 +50,10 @@ Crafty.c("SimpleEnemy", {
 				.image("imgs/bullet.png")
 				.origin("center")
 				.attr({ x: this.x, y: this.y, z: 4})
-				.setSpeed(0,5);
-		this.realDelay(this.fireWeapon, 1000);
+				.setSpeed(5);
+		this.timeout(function() {
+             this.fireWeapon();
+			}, 1000);
 	}
 });
 
@@ -154,7 +155,5 @@ Crafty.c("OnJetpack", {
 			this.x += this.speedX;
 			this.y += this.speedY;
 		});
-	
-		return this;
 	}
 });
