@@ -1,6 +1,6 @@
 // PROJECTILES
-Crafty.c("StraightBullets", {
-	init: function() {
+Crafty.c("HurtForky" , {
+	init: function () {
 		this.requires("Collision")
 			.onHit("Forky", function() {
 				Crafty.e("2D, DOM, fireball, SpriteAnimation")
@@ -12,6 +12,11 @@ Crafty.c("StraightBullets", {
 					});
 				this.destroy();
 			});
+	}
+});
+Crafty.c("StraightBullets", {
+	init: function() {
+		this.requires("HurtForky");
 	},
 	
 	setSpeed: function(speedX, speedY) {
@@ -20,6 +25,25 @@ Crafty.c("StraightBullets", {
 			this.x += speedX;
 			if (this.y > STAGE_HEIGHT || this.y < 0 || this.x < 0 || this.x > STAGE_WIDTH)
 				this.destroy();
+		});
+	}
+});
+Crafty.c("LockingMissles", {
+	init: function () {
+		this.requires("HurtForky");
+	},
+	
+	setSpeed: function(speed) {
+		this.bind("EnterFrame", function () {
+			if (forky.attr('x') > this.x) 
+				this.x += speed;
+			else
+				this.x -= speed;
+			
+			if (forky.attr('y') > this.y)
+				this.y += speed;
+			else
+				this.y -= speed;
 		});
 	}
 });
@@ -80,18 +104,18 @@ Crafty.c("RandomMover", {
 	
 	fireWeapon: function () {
 		// 3 bullet spread
-		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets")
+		Crafty.e("Bullet, 2D, DOM, Image, LockingMissles")
 				.image("imgs/bullet.png")
 				.attr({ x: this.x, y: this.y, z: 4})
-				.setSpeed(0,5);
-		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets")
+				.setSpeed(2);
+		Crafty.e("Bullet, 2D, DOM, Image, LockingMissles")
 				.image("imgs/bullet.png")
 				.attr({ x: this.x, y: this.y, z: 4})
-				.setSpeed(-2,5);
-		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets")
+				.setSpeed(2);
+		Crafty.e("Bullet, 2D, DOM, Image, LockingMissles")
 				.image("imgs/bullet.png")
 				.attr({ x: this.x, y: this.y, z: 4})
-				.setSpeed(2,5);
+				.setSpeed(2);
 	}
 	
 });

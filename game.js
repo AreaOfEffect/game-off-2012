@@ -37,7 +37,8 @@ window.onload = function () {
 
 	//TITLE SCENE
 	Crafty.scene("title", function () {
-		Crafty.e("2D, DOM, Image").attr({ x: 20, y: 20 }).image("imgs/main_title.png");
+		Crafty.e("2D, DOM, Image, Tween").attr({ x: -300, y: -300 }).image("imgs/main_title.png")
+			.tween({x:20, y:20}, 80);
 		
 		Crafty.e("2D, DOM, Image, Mouse").attr({ x: 0, y: 350, z:10 })
 					.image("imgs/play_button.png")
@@ -57,7 +58,7 @@ window.onload = function () {
 	Crafty.scene("main", function () {
 		generateClouds();
 		
-		Crafty.e("Forky, 2D, DOM, Image, OnJetpack")
+		forky = Crafty.e("Forky, 2D, DOM, Image, OnJetpack")
 		.image("imgs/forky.png")
 		.attr({ x: 580, y: 100, z: 2})
 		.configMovement(0.1,10);
