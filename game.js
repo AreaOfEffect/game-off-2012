@@ -18,8 +18,10 @@ window.onload = function () {
 	//the loading screen that will display while our assets load
 	Crafty.scene("loading", function () {
 		//load takes an array of assets and a callback when complete
-		Crafty.load(["imgs/bullet.png","imgs/cloud1.png","imgs/enemy.png","imgs/explosion.png","imgs/forky.png", "imgs/burger_sheet.png"], function () {
-			Crafty.scene("main"); //when everything is loaded, run the main scene
+		Crafty.load(["imgs/bullet.png","imgs/cloud1.png","imgs/enemy.png",
+		"imgs/forky.png", "imgs/burger_sheet.png", "imgs/main_title.png","imgs/play_button.png",
+		"imgs/fireball.png"], function () {
+			Crafty.scene("title"); //when everything is loaded, run the main scene
 		});
 
 		//black background with some loading text
@@ -35,20 +37,21 @@ window.onload = function () {
 
 	//TITLE SCENE
 	Crafty.scene("title", function () {
+		Crafty.e("2D, DOM, Image").attr({ x: 20, y: 20 }).image("imgs/main_title.png");
 		
-		Crafty.e("2D, DOM, Text, Mouse, Color").attr({ w: 700, h: 20, x: 0, y: 350 })
-					.text("PLAY GAME")
-					.css({ "text-align": "center", "cursor": "pointer" })
+		Crafty.e("2D, DOM, Image, Mouse").attr({ x: 0, y: 350, z:10 })
+					.image("imgs/play_button.png")
+					.css({ "cursor": "pointer" })
 					.bind('Click', function () {
 						Crafty.scene("main");
 					});
+		generateClouds();
 					
 	});
 
 
-	
-	Crafty.sprite(64, "imgs/explosion.png", {exp: [0,0]});
 	Crafty.sprite(120, "imgs/burger_sheet.png", {burg:[0,0]});
+	Crafty.sprite(100, "imgs/fireball.png", {fireball:[0,0]});
 
 	//MAIN GAME
 	Crafty.scene("main", function () {

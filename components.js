@@ -3,10 +3,10 @@ Crafty.c("StraightBullets", {
 	init: function() {
 		this.requires("Collision")
 			.onHit("Forky", function() {
-				Crafty.e("2D, DOM, exp, SpriteAnimation")
+				Crafty.e("2D, DOM, fireball, SpriteAnimation")
 					.attr({x: this.x, y: this.y, z: 10})
-					.animate("boom", [[0,0],[1,0],[2,0],[3,0],[0,1],[1,1],[2,1],[3,1],[0,2],[1,2],[2,2],[3,2],[0,3],[1,3],[2,3],[3,3]])
-					.animate("boom", 60, 0)
+					.animate("boom", 0, 0, 7)
+					.animate("boom", 20, 0)
 					.bind("AnimationEnd", function(reelId) {
 						this.destroy();
 					});
@@ -58,18 +58,23 @@ Crafty.c("RandomMover", {
 	init: function () {
 		this.requires("RealDelay");
 		this.requires("Tween");
+		
 		this.realDelay(this.nextLocation, 1000);
+		
+		// kill Forky on hit
 		this.requires("Collision")
 			.onHit("Forky", function() {
 				console.log("ouch, bullet");
 			});
+		
+		// fire bullets 100 ms after moving to new position
+		this.bind("TweenEnd", function () {
+			this.realDelay(this.fireWeapon, 100);
+		});
 	},
 	
 	nextLocation: function() {
 		this.tween({x: Crafty.math.randomInt(10, STAGE_WIDTH), y: Crafty.math.randomInt(10, STAGE_HEIGHT/2)}, 40);
-		this.bind("TweenEnd", function () {
-			this.realDelay(this.fireWeapon, 100);
-		});
 		this.realDelay(this.nextLocation, 3000);		
 	},
 	
