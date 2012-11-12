@@ -29,21 +29,37 @@ Crafty.c("StraightBullets", {
 	}
 });
 Crafty.c("LockingMissles", {
+	sluggishSpeed: 0.05,
+	maxSpeed: 4,
+	
 	init: function () {
 		this.requires("HurtForky");
 	},
 	
-	setSpeed: function(speed) {
+	setSpeed: function(speedX, speedY) {
+		this.speedX = speedX;
+		this.speedY = speedY;
+		
 		this.bind("EnterFrame", function () {
 			if (forky.attr('x') > this.x) 
-				this.x += speed;
+				this.speedX += this.sluggishSpeed;
 			else
-				this.x -= speed;
+				this.speedX -= this.sluggishSpeed;
 			
 			if (forky.attr('y') > this.y)
-				this.y += speed;
+				this.speedY += this.sluggishSpeed;
 			else
-				this.y -= speed;
+				this.speedY -= this.sluggishSpeed;
+			
+			if (this.speedX > this.maxSpeed)
+				this.speedX = this.maxSpeed;
+			if (this.speedY > this.maxSpeed)
+				this.speedY = this.maxSpeed;
+			this.x += this.speedX;
+			this.y += this.speedY;
+			
+			if (this.y > STAGE_HEIGHT || this.y < 0 || this.x < 0 || this.x > STAGE_WIDTH)
+				this.destroy();
 		});
 	}
 });
@@ -107,15 +123,15 @@ Crafty.c("RandomMover", {
 		Crafty.e("Bullet, 2D, DOM, Image, LockingMissles")
 				.image("imgs/bullet.png")
 				.attr({ x: this.x, y: this.y, z: 4})
-				.setSpeed(2);
+				.setSpeed(0,5);
 		Crafty.e("Bullet, 2D, DOM, Image, LockingMissles")
 				.image("imgs/bullet.png")
 				.attr({ x: this.x, y: this.y, z: 4})
-				.setSpeed(2);
+				.setSpeed(2,5);
 		Crafty.e("Bullet, 2D, DOM, Image, LockingMissles")
 				.image("imgs/bullet.png")
 				.attr({ x: this.x, y: this.y, z: 4})
-				.setSpeed(2);
+				.setSpeed(-2,5);
 	}
 	
 });
@@ -217,6 +233,22 @@ Crafty.c("OnJetpack", {
 			
 			this.x += this.speedX;
 			this.y += this.speedY;
+			if (this.x > STAGE_WIDTH-this.w) {
+				this.x = STAGE_WIDTH-this.w;
+				this.speedX = 0;
+			}
+			else if (this.x < 0) {
+				this.x = 0;
+				this.speedX = 0;
+			}
+			if (this.y > STAGE_HEIGHT-this.h) {
+				this.y = STAGE_HEIGHT-this.h;
+				this.speedY = 0;
+			}
+			else if (this.y < 0) {
+				this.y = 0;
+				this.speedY = 0;
+			}
 		});
 	
 		return this;
