@@ -8,7 +8,13 @@
   
     <title>Forky's Revenge</title>
     <style>
-    body, html { font-family:Arial; font-size:14px; background-color: black; color: white}
+    body, html { font-family:Arial; font-size:14px; color: white;
+    	background:url('imgs/generator.png');
+    	background-color: black; 
+		background-repeat:no-repeat;
+		background-attachment:fixed;
+		background-position:top-left; 
+    }
     #cr-stage { 
     	height: 600px;
     	width: 700px;
@@ -19,15 +25,22 @@
 		box-shadow: 5px 5px 20px gainsboro; 
     }
     #content {
-    	
+    	background: url('imgs/bg_mid.png') repeat-y;
+    	padding: 20px 60px 50px 60px;
+    }
+    #header {
+    	background: url('imgs/bg_top.png') no-repeat;
+    	padding: 60px 60px 0 60px;
     }
     #container {
-    	padding: 30px;
-    	width: 1000px;
+    	padding: 10px 0 0 0;
+    	width: 920px;
 		margin: auto;
-		background-color: #333;
     }
     #footer {
+    	background: url('imgs/bg_bottom.png') no-repeat;
+    	padding: 20px 60px 10px 60px;
+    	height: 173px;
     	text-align: center;
 		font-style: italic;
 		font-size: 12px;
@@ -38,23 +51,26 @@
 <body>
 	
 <div id="container"> 
-	<div id="content">
+	<div id="header">
     	<img src="imgs/areaofeffect_logo.png" width="300" />
+    </div>
+    
+    <div id="content">
 		<h2>Forky's Revenge</h2>
 		<p>A game about a misunderstood fork, whose life of constant abuse has led him
 		to a path of vengeance. Setting out with only his jetpack and simple weapons,
 		he must defeat the evil food items to free himself and his people from slavery.</p> 
       
-    
-		<div id="footer">		  
-			<p>AreaOfEffect Games 2012</p>
+    	<div id="cr-stage">
 		</div>
+		
 
     </div> 
     
-	<div id="cr-stage">
+	
+    <div id="footer">		  
+			<p>AreaOfEffect Games 2012</p>
 	</div>
-    
     
     
 </div>
