@@ -4,7 +4,7 @@ Crafty.c("HurtForky" , {
 		this.requires("Collision")
 			.onHit("Forky", function() {
 				Crafty.e("2D, DOM, fireball, SpriteAnimation")
-					.attr({x: this.x, y: this.y, z: 10})
+					.attr({x: this.x-50, y: this.y-50, z: 10})
 					.animate("boom", 0, 0, 7)
 					.animate("boom", 20, 0)
 					.bind("AnimationEnd", function(reelId) {
@@ -14,11 +14,7 @@ Crafty.c("HurtForky" , {
 			});
 	}
 });
-Crafty.c("StraightBullets", {
-	init: function() {
-		this.requires("HurtForky");
-	},
-	
+Crafty.c("StraightBullets", {	
 	setSpeed: function(speedX, speedY) {
 		this.bind('EnterFrame', function () {
 			this.y += speedY;
@@ -65,6 +61,14 @@ Crafty.c("LockingMissles", {
 });
 
 // ENEMIES
+Crafty.c("EnemyBase", {
+	init: function () {
+		this.requires("Collision")
+			.onHit("ForkyBullet", function () {
+				console.log("hithit");
+			});
+	}
+});
 Crafty.c("SimpleEnemy", {	
 	init: function () {
 		this.requires("RealDelay");
@@ -87,7 +91,7 @@ Crafty.c("SimpleEnemy", {
 	},
 	
 	fireWeapon: function() {
-		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets")
+		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets, HurtForky")
 				.image("imgs/bullet.png")
 				.attr({ x: this.x, y: this.y, z: 4})
 				.setSpeed(0,5);
@@ -137,6 +141,28 @@ Crafty.c("RandomMover", {
 });
 
 
+/******* Forky's Components ********/
+Crafty.c("ForkyBase", {
+	bulletSpeed: 3,
+	init: function () {
+		this.requires("2D").requires("DOM").requires("Image").requires("OnJetpack").requires("Keyboard").requires("RealDelay")
+			.image("imgs/forky.png")
+			.attr({ x: 580, y: 100, z: 2})
+			.configMovement(0.1,10)
+			.bind('KeyDown', function () {
+				if (this.isDown("SPACE")) {
+					this.fireBaseWeapon();
+				}
+			});
+	},
+	
+	fireBaseWeapon: function() {
+		Crafty.e("ForkyBullet, 2D, DOM, Image, StraightBullets")
+				.image("imgs/bullet.png")
+				.attr({ x: this.x+(forky.w/2), y: this.y, z: 4})
+				.setSpeed(0,-this.bulletSpeed);
+	}
+});
 
 // MOVEMENT
 Crafty.c("OnJetpack", {

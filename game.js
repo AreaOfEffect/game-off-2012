@@ -58,11 +58,8 @@ window.onload = function () {
 	Crafty.scene("main", function () {
 		generateClouds();
 		
-		forky = Crafty.e("Forky, 2D, DOM, Image, OnJetpack")
-		.image("imgs/forky.png")
-		.attr({ x: 580, y: 100, z: 2})
-		.configMovement(0.1,10);
-		
+		forky = Crafty.e("Forky, ForkyBase");
+				
 		Crafty.e("SimpleEnemyFactory, RealDelay")
 			.realDelay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
 		
@@ -91,7 +88,7 @@ window.onload = function () {
 	}
 
 	function spawnSimpleEnemy() {
-		var e =	Crafty.e("Enemy, 2D, DOM, burg, SpriteAnimation, RandomMover")
+		var e =	Crafty.e("Enemy, 2D, DOM, burg, SpriteAnimation, EnemyBase, RandomMover")
 			.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
 			.animate("burger", 0, 0, 22)
 			.animate("burger", 60, -1);
