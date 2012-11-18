@@ -124,17 +124,20 @@ Crafty.c("RandomMover", {
 	
 	fireWeapon: function () {
 		// 3 bullet spread
-		Crafty.e("Bullet, 2D, DOM, Image, LockingMissles")
-				.image("imgs/bullet.png")
+		Crafty.e("Bullet, 2D, DOM, firebacon, SpriteAnimation, LockingMissles")
 				.attr({ x: this.x, y: this.y, z: 4})
+				.animate("baconani", 0, 0, 3)
+				.animate("baconani", 20, -1)
 				.setSpeed(0,5);
-		Crafty.e("Bullet, 2D, DOM, Image, LockingMissles")
-				.image("imgs/bullet.png")
+		Crafty.e("Bullet, 2D, DOM, firebacon, SpriteAnimation, LockingMissles")
 				.attr({ x: this.x, y: this.y, z: 4})
+				.animate("baconani", 0, 0, 3)
+				.animate("baconani", 20, -1)
 				.setSpeed(2,5);
-		Crafty.e("Bullet, 2D, DOM, Image, LockingMissles")
-				.image("imgs/bullet.png")
+		Crafty.e("Bullet, 2D, DOM, firebacon, SpriteAnimation, LockingMissles")
 				.attr({ x: this.x, y: this.y, z: 4})
+				.animate("baconani", 0, 0, 3)
+				.animate("baconani", 20, -1)
 				.setSpeed(-2,5);
 	}
 	

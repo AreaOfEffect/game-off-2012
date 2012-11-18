@@ -20,7 +20,7 @@ window.onload = function () {
 		//load takes an array of assets and a callback when complete
 		Crafty.load(["imgs/bullet.png","imgs/cloud1.png","imgs/enemy.png",
 		"imgs/forky.png", "imgs/burger_sheet.png", "imgs/main_title.png","imgs/play_button.png",
-		"imgs/fireball.png", "imgs/minifork.png"], function () {
+		"imgs/fireball.png", "imgs/minifork.png", "imgs/bacon.png"], function () {
 			Crafty.scene("title"); //when everything is loaded, run the main scene
 		});
 
@@ -51,6 +51,7 @@ window.onload = function () {
 	});
 
 
+	Crafty.sprite(80, "imgs/bacon.png", {firebacon:[0,0]});
 	Crafty.sprite(120, "imgs/burger_sheet.png", {burg:[0,0]});
 	Crafty.sprite(100, "imgs/fireball.png", {fireball:[0,0]});
 
