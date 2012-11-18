@@ -158,7 +158,7 @@ Crafty.c("ForkyBase", {
 	
 	fireBaseWeapon: function() {
 		Crafty.e("ForkyBullet, 2D, DOM, Image, StraightBullets")
-				.image("imgs/bullet.png")
+				.image("imgs/minifork.png")
 				.attr({ x: this.x+(forky.w/2), y: this.y, z: 4})
 				.setSpeed(0,-this.bulletSpeed);
 	}
