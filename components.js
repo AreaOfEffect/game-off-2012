@@ -6,7 +6,7 @@ Crafty.c("HurtForky" , {
 				Crafty.e("2D, DOM, fireball, SpriteAnimation")
 					.attr({x: this.x-50, y: this.y-50, z: 10})
 					.animate("boom", 0, 0, 7)
-					.animate("boom", 20, 0)
+					.animate("boom", 20, -1)
 					.bind("AnimationEnd", function(reelId) {
 						this.destroy();
 					});
@@ -148,9 +148,10 @@ Crafty.c("RandomMover", {
 Crafty.c("ForkyBase", {
 	bulletSpeed: 3,
 	init: function () {
-		this.requires("2D").requires("DOM").requires("Image").requires("OnJetpack").requires("Keyboard").requires("RealDelay")
-			.image("imgs/forky.png")
+		this.requires("2D").requires("DOM").requires("forkysprite").requires("SpriteAnimation").requires("OnJetpack").requires("Keyboard").requires("RealDelay")
 			.attr({ x: 580, y: 100, z: 2})
+			.animate("forky", 0, 0, 4)
+			.animate("forky", 20, -1)
 			.configMovement(0.1,10)
 			.bind('KeyDown', function () {
 				if (this.isDown("SPACE")) {

@@ -50,8 +50,8 @@ window.onload = function () {
 					
 	});
 
-
-	Crafty.sprite(80, "imgs/bacon.png", {firebacon:[0,0]});
+	Crafty.sprite(76, 173, "imgs/forky_ss.png", {forkysprite:[0,0]});
+	Crafty.sprite(20, 80, "imgs/bacon2.png", {firebacon:[0,0]});
 	Crafty.sprite(120, "imgs/burger_sheet.png", {burg:[0,0]});
 	Crafty.sprite(100, "imgs/fireball.png", {fireball:[0,0]});
 
