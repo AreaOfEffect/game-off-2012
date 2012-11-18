@@ -127,16 +127,19 @@ Crafty.c("RandomMover", {
 		Crafty.e("Bullet, 2D, DOM, firebacon, SpriteAnimation, LockingMissles")
 				.attr({ x: this.x, y: this.y, z: 4})
 				.animate("baconani", 0, 0, 3)
+				.animate("baconani", 3, 0, 0)
 				.animate("baconani", 20, -1)
 				.setSpeed(0,5);
 		Crafty.e("Bullet, 2D, DOM, firebacon, SpriteAnimation, LockingMissles")
 				.attr({ x: this.x, y: this.y, z: 4})
 				.animate("baconani", 0, 0, 3)
+				.animate("baconani", 3, 0, 0)
 				.animate("baconani", 20, -1)
 				.setSpeed(2,5);
 		Crafty.e("Bullet, 2D, DOM, firebacon, SpriteAnimation, LockingMissles")
 				.attr({ x: this.x, y: this.y, z: 4})
 				.animate("baconani", 0, 0, 3)
+				.animate("baconani", 3, 0, 0)
 				.animate("baconani", 20, -1)
 				.setSpeed(-2,5);
 	}
@@ -151,6 +154,7 @@ Crafty.c("ForkyBase", {
 		this.requires("2D").requires("DOM").requires("forkysprite").requires("SpriteAnimation").requires("OnJetpack").requires("Keyboard").requires("RealDelay")
 			.attr({ x: 580, y: 100, z: 2})
 			.animate("forky", 0, 0, 4)
+			.animate("forky", 4, 0, 0)
 			.animate("forky", 20, -1)
 			.configMovement(0.1,10)
 			.bind('KeyDown', function () {
