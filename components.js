@@ -6,7 +6,7 @@ Crafty.c("HurtForky" , {
 				Crafty.e("2D, DOM, fireball, SpriteAnimation")
 					.attr({x: this.x-50, y: this.y-50, z: 10})
 					.animate("boom", 0, 0, 7)
-					.animate("boom", 20, -1)
+					.animate("boom", 20, 0)
 					.bind("AnimationEnd", function(reelId) {
 						this.destroy();
 					});
