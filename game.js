@@ -18,9 +18,10 @@ window.onload = function () {
 	//the loading screen that will display while our assets load
 	Crafty.scene("loading", function () {
 		//load takes an array of assets and a callback when complete
-		Crafty.load(["imgs/bullet.png","imgs/cloud1.png","imgs/enemy.png",
-		"imgs/forky.png", "imgs/burger_sheet.png", "imgs/main_title.png","imgs/play_button.png",
-		"imgs/fireball.png", "imgs/minifork.png", "imgs/bacon.png"], function () {
+		Crafty.load(["imgs/bullet.png","imgs/cloud1.png",
+		"imgs/forky_ss.png", "imgs/burger_sheet.png", "imgs/main_title.png","imgs/play_button.png",
+		"imgs/fireball.png", "imgs/minifork.png", "imgs/bacon2.png", "imgs/peppermint.png",
+		"imgs/onion_ss.png", "imgs/egg_ss.png"], function () {
 			Crafty.scene("title"); //when everything is loaded, run the main scene
 		});
 
@@ -53,7 +54,10 @@ window.onload = function () {
 	Crafty.sprite(76, 173, "imgs/forky_ss.png", {forkysprite:[0,0]});
 	Crafty.sprite(20, 80, "imgs/bacon2.png", {firebacon:[0,0]});
 	Crafty.sprite(120, "imgs/burger_sheet.png", {burg:[0,0]});
+	Crafty.sprite(100,91, "imgs/egg_ss.png", {egg:[0,0]});
+	Crafty.sprite(120,107, "imgs/onion_ss.png", {onion:[0,0]});
 	Crafty.sprite(100, "imgs/fireball.png", {fireball:[0,0]});
+	Crafty.sprite(39,36, "imgs/peppermint.png", {peppermint:[0,0]});
 
 	//MAIN GAME
 	Crafty.scene("main", function () {
@@ -61,10 +65,11 @@ window.onload = function () {
 		
 		forky = Crafty.e("Forky, ForkyBase");
 				
-		Crafty.e("SimpleEnemyFactory, RealDelay")
-			.realDelay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
+		simpleEnemyGen = Crafty.e("SimpleEnemyFactory, RealDelay");
+			simpleEnemyGen.realDelay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
 		
-
+		powerUpGen = Crafty.e("PowerupFactory, RealDelay");
+			powerUpGen.realDelay(spawnPowerup, Crafty.math.randomInt(1000,5000));
 	});
 	
 	
@@ -89,15 +94,41 @@ window.onload = function () {
 	}
 
 	function spawnSimpleEnemy() {
-		var e =	Crafty.e("Enemy, 2D, DOM, burg, SpriteAnimation, EnemyBase, RandomMover")
+		Crafty.e("Enemy, 2D, DOM, onion, SpriteAnimation, EnemyBase, SimpleEnemy")
 			.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
+			.animate("idle", 0, 0, 4)
+			.animate("idle", 60, -1)
+			.setSpeed(1.5);
+			
+		Crafty.e("Enemy, 2D, DOM, egg, SpriteAnimation, EnemyBase, SimpleEnemy")
+			.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
+			.animate("idle", 0, 0, 3)
+			.animate("idle", 60, -1)
+			.setSpeed(1.5);
+			
+			
+		simpleEnemyGen.realDelay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
+	}
+	
+	function spawnBurger() {
+		Crafty.e("Enemy, 2D, DOM, burg, SpriteAnimation, EnemyBase, RandomMover")
+			.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -100, z: 2})		
 			.animate("burger", 0, 0, 22)
 			.animate("burger", 60, -1);
-			//.setSpeed(1.5);
-		//e.realDelay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
 	}
 
-    
+    function spawnPowerup() {
+    	Crafty.e("Powerup, 2D, DOM, peppermint, SpriteAnimation")
+    				.animate("spin", 0 , 0, 13)
+    				.animate("spin", 40, -1)
+    				.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH-20), y: -50, z: 2})
+    				.bind("EnterFrame", function () {
+    					this.y += 5;
+    					if (this.y > STAGE_HEIGHT)
+    						this.destroy();
+    				});
+    	powerUpGen.realDelay(spawnPowerup, Crafty.math.randomInt(1000,5000));
+    }
     
 };
 

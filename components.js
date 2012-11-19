@@ -19,7 +19,7 @@ Crafty.c("StraightBullets", {
 		this.bind('EnterFrame', function () {
 			this.y += speedY;
 			this.x += speedX;
-			if (this.y > STAGE_HEIGHT || this.y < 0 || this.x < 0 || this.x > STAGE_WIDTH)
+			if (this.y > STAGE_HEIGHT || this.y < (0-this.h) || this.x < (0-this.w) || this.x > STAGE_WIDTH)
 				this.destroy();
 		});
 	}
@@ -153,9 +153,9 @@ Crafty.c("ForkyBase", {
 	init: function () {
 		this.requires("2D").requires("DOM").requires("forkysprite").requires("SpriteAnimation").requires("OnJetpack").requires("Keyboard").requires("RealDelay")
 			.attr({ x: 580, y: 100, z: 2})
-			.animate("forky", 0, 0, 4)
-			.animate("forky", 4, 0, 0)
-			.animate("forky", 20, -1)
+			.animate("idle", 0, 0, 4)
+			.animate("lean", 4, 0, 7)
+			.animate("idle", 20, -1)
 			.configMovement(0.1,10)
 			.bind('KeyDown', function () {
 				if (this.isDown("SPACE")) {
@@ -224,10 +224,24 @@ Crafty.c("OnJetpack", {
 		});
 		
 		this.bind('EnterFrame', function () {
-			if (this.movingLeft)
+			if (this.movingLeft) {
 				this.speedX -= acell;
-			else if (this.movingRight)
+				
+				// leaning animation
+				// if (!this.isPlaying("lean")) {
+// 					this.stop();
+// 					this.animate("lean",20,0);
+// 				}
+			}
+			else if (this.movingRight) {
 				this.speedX += acell;
+				
+				// leaning
+				// if (!this.isPlaying("lean")) {
+// 					this.stop();
+// 					this.animate("lean",20,0);
+// 				}
+			}
 			else {
 				if (this.speedX < 0) {
 					if ((0 - this.speedX) > acell)
@@ -239,7 +253,11 @@ Crafty.c("OnJetpack", {
 						this.speedX -= acell;
 					else
 						this.speedX = 0;
-				}		
+				}
+				if (!this.isPlaying("idle")) {
+					this.stop();
+					this.animate("idle",20,-1);		
+				}
 			}
 			
 			if (this.movingUp)
