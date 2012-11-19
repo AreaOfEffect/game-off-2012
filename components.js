@@ -1,15 +1,20 @@
-// PROJECTILES
-Crafty.c("HurtForky" , {
-	init: function () {
-		this.requires("Collision")
-			.onHit("Forky", function() {
-				Crafty.e("2D, DOM, fireball, SpriteAnimation")
-					.attr({x: this.x-50, y: this.y-50, z: 10})
+function createFireball(x,y) {
+	Crafty.e("2D, DOM, fireball, SpriteAnimation")
+					.attr({x: x, y: y, z: 10})
 					.animate("boom", 0, 0, 7)
 					.animate("boom", 20, 0)
 					.bind("AnimationEnd", function(reelId) {
 						this.destroy();
 					});
+}
+
+
+// PROJECTILES
+Crafty.c("HurtForky" , {
+	init: function () {
+		this.requires("Collision")
+			.onHit("Forky", function() {
+				createFireball(this.x-50, this.y-50);
 				this.destroy();
 			});
 	}
@@ -63,9 +68,17 @@ Crafty.c("LockingMissles", {
 // ENEMIES
 Crafty.c("EnemyBase", {
 	init: function () {
+		this.health = 100;
 		this.requires("Collision")
 			.onHit("ForkyBullet", function () {
-				console.log("hithit");
+				var fork = this.hit('ForkyBullet')[0].obj;
+				createFireball(fork.x-25,fork.y-25);
+				//destroy fork bullet
+				fork.destroy()
+				this.health -= 50;
+				if (this.health < 0) {
+					this.destroy();
+				}
 			});
 	}
 });
