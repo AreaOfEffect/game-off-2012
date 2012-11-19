@@ -78,6 +78,7 @@ Crafty.c("EnemyBase", {
 				this.health -= 50;
 				if (this.health < 0) {
 					this.destroy();
+					gameScore += 100;
 				}
 			});
 	}
