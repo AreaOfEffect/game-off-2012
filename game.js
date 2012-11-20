@@ -136,13 +136,13 @@ function spawnSimpleEnemy() {
 	Crafty.e("Enemy, 2D, DOM, onion, SpriteAnimation, EnemyBase, SimpleEnemy")
 		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
 		.animate("idle", 0, 0, 4)
-		.animate("idle", 60, -1)
+		.animate("idle", 30, -1)
 		.setSpeed(1.5);
 		
 	Crafty.e("Enemy, 2D, DOM, egg, SpriteAnimation, EnemyBase, SimpleEnemy")
 		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
 		.animate("idle", 0, 0, 3)
-		.animate("idle", 60, -1)
+		.animate("idle", 20, -1)
 		.setSpeed(1.5);
 		
 		

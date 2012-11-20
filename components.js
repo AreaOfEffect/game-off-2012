@@ -165,14 +165,19 @@ Crafty.c("RandomMover", {
 Crafty.c("ForkyBase", {
 	bulletSpeed: 3,
 	init: function () {
+		this.canFire = true;
+		this.fireTimeout = 200;
+		
 		this.requires("2D").requires("DOM").requires("forkysprite").requires("SpriteAnimation").requires("OnJetpack").requires("Keyboard").requires("RealDelay")
 			.attr({ x: 580, y: 100, z: 2})
 			.animate("idle", 0, 0, 4)
 			.animate("lean", 4, 0, 7)
 			.animate("idle", 20, -1)
 			.configMovement(0.1,10)
-			.bind('KeyDown', function () {
-				if (this.isDown("SPACE")) {
+			.bind('EnterFrame', function () {
+				if (this.isDown("SPACE") && this.canFire) {
+					this.canFire = false;
+					this.realDelay(function(){this.canFire = true;},this.fireTimeout); // fire weapon timeout
 					this.fireBaseWeapon();
 				}
 			});
