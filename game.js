@@ -11,6 +11,20 @@ window.onload = function () {
     Crafty.init(STAGE_WIDTH, STAGE_HEIGHT);
     //Crafty.canvas.init();    
     
+    
+    Crafty.sprite(76, 173, "imgs/forky_ss.png", {forkysprite:[0,0]});
+	Crafty.sprite(20, 80, "imgs/bacon2.png", {firebacon:[0,0]});
+	Crafty.sprite(120, "imgs/burger_sheet.png", {burg:[0,0]});
+	Crafty.sprite(100,91, "imgs/egg_ss.png", {egg:[0,0]});
+	Crafty.sprite(120,107, "imgs/onion_ss.png", {onion:[0,0]});
+	Crafty.sprite(100, "imgs/fireball.png", {fireball:[0,0]});
+	Crafty.sprite(39,36, "imgs/peppermint.png", {peppermint:[0,0]});
+	
+	
+	
+	
+	
+    
     //LOADING SCENE
 	//the loading screen that will display while our assets load
 	Crafty.scene("loading", function () {
@@ -34,7 +48,7 @@ window.onload = function () {
 
 	//TITLE SCENE
 	Crafty.scene("title", function () {
-		Crafty.e("2D, DOM, Image, Tween").attr({ x: -300, y: -300, z: 2}).image("imgs/main_title.png")
+		Crafty.e("Title, 2D, DOM, Image, Tween").attr({ x: -300, y: -300, z: 2}).image("imgs/main_title.png")
 			.tween({x:20, y:20}, 80);
 		
 		Crafty.e("2D, DOM, Image, Mouse").attr({ x: 0, y: 350, z:10 })
@@ -47,7 +61,9 @@ window.onload = function () {
 						this.image("imgs/play_button.png");
 					})
 					.bind('Click', function () {
-						Crafty.scene("main");
+						this.destroy();
+						Crafty("Title").destroy();
+						showInstructions();
 					});
 					
 		sky();
@@ -55,16 +71,14 @@ window.onload = function () {
 					
 	});
 	
-	Crafty.sprite(76, 173, "imgs/forky_ss.png", {forkysprite:[0,0]});
-	Crafty.sprite(20, 80, "imgs/bacon2.png", {firebacon:[0,0]});
-	Crafty.sprite(120, "imgs/burger_sheet.png", {burg:[0,0]});
-	Crafty.sprite(100,91, "imgs/egg_ss.png", {egg:[0,0]});
-	Crafty.sprite(120,107, "imgs/onion_ss.png", {onion:[0,0]});
-	Crafty.sprite(100, "imgs/fireball.png", {fireball:[0,0]});
-	Crafty.sprite(39,36, "imgs/peppermint.png", {peppermint:[0,0]});
+	
 
 	//MAIN GAME
 	Crafty.scene("main", function () {
+		difficultyLvl = 0;
+		waveNum = 1;
+		enemiesAlive = 0;
+		
 		sky();
 		generateClouds();
 		
@@ -75,12 +89,13 @@ window.onload = function () {
 		
 		powerUpGen = Crafty.e("PowerupFactory, RealDelay");
 			powerUpGen.realDelay(spawnPowerup, Crafty.math.randomInt(1000,5000));
-			
+		
+		// HUD	
 		gameScore = 0;
 		gameScoreTxt = 0;
-		scoreTxt = Crafty.e("Score, 2D, DOM, Text").attr({x: 10, y: STAGE_HEIGHT-50, w: 300, z:20})
-						.textFont({family: 'Impact', size: '24px'})
+		scoreTxt = Crafty.e("Score, 2D, DOM, Text").attr({x: 10, y: STAGE_HEIGHT-40, w: 300, z:20})
 						.textColor('#000000')
+						.text("Score: 0")
 						.bind("EnterFrame", function () {
 							if (gameScore > gameScoreTxt) {
 								if (gameScore - gameScoreTxt > 10)
@@ -91,9 +106,26 @@ window.onload = function () {
 								this.text("Score: " + gameScoreTxt);
 							}
 						});
+		cornerLevelTxt = Crafty.e("cornerLevel, 2D, DOM, Text").attr({x: 10, y: 10, w: 300, z:20})
+						.textColor('#000000')
+						.css({"font-size": '10px'});
+		
+		upgradeDiffcultyLvl();
 	});
     
 };
+
+function upgradeDiffcultyLvl() {
+	difficultyLvl++;
+	cornerLevelTxt.text("Level " + difficultyLvl);
+	Crafty.e("2D, DOM, Text, Tween").attr({x: STAGE_WIDTH/2, y: STAGE_HEIGHT/2, w: 500, z:20})
+						.css({"font-size": '64px',"color":"#fff", "text-shadow":"2px 2px 20px black"})
+						.text("Level "+difficultyLvl)
+						.tween({alpha: 0}, 150)
+						.bind("TweenEnd", function () {
+							this.destroy();
+						});
+}
 
 /*****************
 	Helper functions
@@ -130,6 +162,19 @@ function generateClouds() {
 					}
 				});
 	}
+}
+
+function showInstructions() {
+		Crafty.e("2D, DOM, Text, Keyboard").attr({x: 0, y: STAGE_HEIGHT/2, w: STAGE_WIDTH, z:20})
+						.textFont({family: 'Impact', size: '24px'})
+						.css({"text-align:": "center" })
+						.textColor('#000000')
+						.text("Move = Arrows, Shoot = Space")
+						.bind('EnterFrame', function () {
+							if (this.isDown("SPACE"))
+								Crafty.scene("main");
+						});
+		
 }
 
 function spawnSimpleEnemy() {

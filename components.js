@@ -68,6 +68,8 @@ Crafty.c("LockingMissles", {
 // ENEMIES
 Crafty.c("EnemyBase", {
 	init: function () {
+		enemiesAlive++;
+		
 		this.health = 100;
 		this.requires("Collision")
 			.onHit("ForkyBullet", function () {
@@ -77,8 +79,19 @@ Crafty.c("EnemyBase", {
 				fork.destroy()
 				this.health -= 50;
 				if (this.health < 0) {
+					enemiesAlive--;
 					this.destroy();
 					gameScore += 100;
+				}
+			})
+			.onHit("Forky", function() {
+				console.log("ouch, bullet");
+			});
+		
+		this.requires("2D").requires("DOM")
+			.bind('EnterFrame' , function () {
+				if (this.y > STAGE_HEIGHT) {
+					this.destroy();
 				}
 			});
 	}
@@ -87,19 +100,11 @@ Crafty.c("SimpleEnemy", {
 	init: function () {
 		this.requires("RealDelay");
 		this.realDelay(this.fireWeapon, 1000);
-		this.requires("Collision")
-			.onHit("Forky", function() {
-				console.log("ouch, bullet");
-			});
 	},
 	
 	setSpeed: function(speed) {
 		this.bind('EnterFrame', function () {
 			this.y += speed;
-			
-			if (this.y > STAGE_HEIGHT) {
-				this.destroy();
-			}
 		});
 		return this;
 	},
@@ -118,12 +123,6 @@ Crafty.c("RandomMover", {
 		this.requires("Tween");
 		
 		this.realDelay(this.nextLocation, 1000);
-		
-		// kill Forky on hit
-		this.requires("Collision")
-			.onHit("Forky", function() {
-				console.log("ouch, bullet");
-			});
 		
 		// fire bullets 100 ms after moving to new position
 		this.bind("TweenEnd", function () {
@@ -166,7 +165,7 @@ Crafty.c("ForkyBase", {
 	bulletSpeed: 3,
 	init: function () {
 		this.canFire = true;
-		this.fireTimeout = 200;
+		this.fireTimeout = 50;
 		
 		this.requires("2D").requires("DOM").requires("forkysprite").requires("SpriteAnimation").requires("OnJetpack").requires("Keyboard").requires("RealDelay")
 			.attr({ x: 580, y: 100, z: 2})
