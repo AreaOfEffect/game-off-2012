@@ -20,13 +20,17 @@ Crafty.c("HurtForky" , {
 	}
 });
 Crafty.c("StraightBullets", {	
-	setSpeed: function(speedX, speedY) {
+	
+	setSpeed: function(speedX, speedY, rot) {
 		this.bind('EnterFrame', function () {
 			this.y += speedY;
 			this.x += speedX;
+			this.rotation += rot;
 			if (this.y > STAGE_HEIGHT || this.y < (0-this.h) || this.x < (0-this.w) || this.x > STAGE_WIDTH)
 				this.destroy();
 		});
+		
+		return this;
 	}
 });
 Crafty.c("LockingMissles", {
@@ -61,7 +65,9 @@ Crafty.c("LockingMissles", {
 			
 			if (this.y > STAGE_HEIGHT || this.y < 0 || this.x < 0 || this.x > STAGE_WIDTH)
 				this.destroy();
+			
 		});
+		return this;
 	}
 });
 
@@ -110,10 +116,12 @@ Crafty.c("SimpleEnemy", {
 	},
 	
 	fireWeapon: function() {
-		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets, HurtForky")
-				.image("imgs/bullet.png")
+		Crafty.e("Bullet, 2D, DOM, eggbullet, SpriteAnimation, StraightBullets, HurtForky")
+				.animate("go", 0, 0, 4)
+				.animate("go", 20, -1)
 				.attr({ x: this.x, y: this.y, z: 4})
-				.setSpeed(0,5);
+				.setSpeed(0,5,2)
+				.origin("center");
 		this.realDelay(this.fireWeapon, 1000);
 	}
 });
