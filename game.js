@@ -17,7 +17,7 @@ window.onload = function () {
 	Crafty.sprite(120, "imgs/burger_sheet.png", {burg:[0,0]});
 	Crafty.sprite(100,91, "imgs/egg_ss.png", {egg:[0,0]});
 	Crafty.sprite(100,91, "imgs/eggbullet.png", {eggbullet:[0,0]});
-	Crafty.sprite(120,107, "imgs/onion_ss.png", {onion:[0,0]});
+	Crafty.sprite(80,71, "imgs/onion_ss.png", {onion:[0,0]});
 	Crafty.sprite(100, "imgs/fireball.png", {fireball:[0,0]});
 	Crafty.sprite(39,36, "imgs/peppermint.png", {peppermint:[0,0]});
 	
