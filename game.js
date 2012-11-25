@@ -16,7 +16,7 @@ window.onload = function () {
 	Crafty.sprite(20, 80, "imgs/bacon2.png", {firebacon:[0,0]});
 	Crafty.sprite(120, "imgs/burger_sheet.png", {burg:[0,0]});
 	Crafty.sprite(100,91, "imgs/egg_ss.png", {egg:[0,0]});
-	Crafty.sprite(40,50, "imgs/eggbullet.png", {eggbullet:[0,0]});
+	Crafty.sprite(20,25, "imgs/eggbullet.png", {eggbullet:[0,0]});
 	Crafty.sprite(80,71, "imgs/onion_ss.png", {onion:[0,0]});
 	Crafty.sprite(100, "imgs/fireball.png", {fireball:[0,0]});
 	Crafty.sprite(39,36, "imgs/peppermint.png", {peppermint:[0,0]});
@@ -179,15 +179,16 @@ function showInstructions() {
 }
 
 function spawnSimpleEnemy() {
-	Crafty.e("Enemy, 2D, DOM, onion, SpriteAnimation, EnemyBase, SimpleEnemy")
-		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
-		.animate("idle", 0, 0, 4)
-		.animate("idle", 30, -1)
-		.setSpeed(1.5);
+	// Crafty.e("Enemy, 2D, DOM, onion, SpriteAnimation, EnemyBase, SimpleEnemy")
+// 		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
+// 		.animate("idle", 0, 0, 4)
+// 		.animate("idle", 30, -1)
+// 		.setSpeed(1.5);
 		
 	Crafty.e("Enemy, 2D, DOM, egg, SpriteAnimation, EnemyBase, SimpleEnemy")
 		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
 		.animate("idle", 0, 0, 3)
+		.animate("death", 4, 0, 8)
 		.animate("idle", 20, -1)
 		.setSpeed(1.5);
 		

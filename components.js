@@ -79,15 +79,20 @@ Crafty.c("EnemyBase", {
 		this.health = 100;
 		this.requires("Collision")
 			.onHit("ForkyBullet", function () {
-				var fork = this.hit('ForkyBullet')[0].obj;
-				createFireball(fork.x-25,fork.y-25);
-				//destroy fork bullet
-				fork.destroy()
-				this.health -= 50;
-				if (this.health < 0) {
-					enemiesAlive--;
-					this.destroy();
-					gameScore += 100;
+				if (this.health > 0) {
+					var fork = this.hit('ForkyBullet')[0].obj;
+					createFireball(fork.x-25,fork.y-25);
+					//destroy fork bullet
+					fork.destroy()
+					this.health -= 50;
+					if (this.health <= 0) {
+						enemiesAlive--;
+						this.animate("death",50,0);
+						this.bind('AnimationEnd', function () {
+							this.destroy();
+							gameScore += 100;
+						});					
+					}
 				}
 			})
 			.onHit("Forky", function() {
