@@ -19,7 +19,7 @@ window.onload = function () {
 	Crafty.sprite(30,38, "imgs/eggbullet.png", {eggbullet:[0,0]});
 	Crafty.sprite(80,71, "imgs/onion_ss.png", {onion:[0,0]});
 	Crafty.sprite(100, "imgs/fireball.png", {fireball:[0,0]});
-	Crafty.sprite(39,36, "imgs/peppermint.png", {peppermint:[0,0]});
+	Crafty.sprite(100,82, "imgs/peppermint_glow.png", {peppermint:[0,0]});
 	
 	
 	
