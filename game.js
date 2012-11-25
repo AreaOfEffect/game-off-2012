@@ -16,6 +16,7 @@ window.onload = function () {
 	Crafty.sprite(20, 80, "imgs/bacon2.png", {firebacon:[0,0]});
 	Crafty.sprite(120, "imgs/burger_sheet.png", {burg:[0,0]});
 	Crafty.sprite(100,91, "imgs/egg_ss.png", {egg:[0,0]});
+	Crafty.sprite(100,91, "imgs/eggbullet.png", {eggbullet:[0,0]});
 	Crafty.sprite(120,107, "imgs/onion_ss.png", {onion:[0,0]});
 	Crafty.sprite(100, "imgs/fireball.png", {fireball:[0,0]});
 	Crafty.sprite(39,36, "imgs/peppermint.png", {peppermint:[0,0]});
@@ -32,7 +33,7 @@ window.onload = function () {
 		Crafty.load(["imgs/bullet.png","imgs/cloud1.png",
 		"imgs/forky_ss.png", "imgs/burger_sheet.png", "imgs/main_title.png","imgs/play_button.png", "imgs/play_button_on.png",
 		"imgs/fireball.png", "imgs/minifork.png", "imgs/bacon2.png", "imgs/peppermint.png",
-		"imgs/onion_ss.png", "imgs/egg_ss.png", "imgs/sky_bg.png"], function () {
+		"imgs/onion_ss.png", "imgs/egg_ss.png", "imgs/eggbullet.png", "imgs/sky_bg.png"], function () {
 			Crafty.scene("title"); //when everything is loaded, run the main scene
 		});
 
