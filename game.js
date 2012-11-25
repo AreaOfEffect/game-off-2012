@@ -30,10 +30,11 @@ window.onload = function () {
 	//the loading screen that will display while our assets load
 	Crafty.scene("loading", function () {
 		//load takes an array of assets and a callback when complete
-		Crafty.load(["imgs/bullet.png","imgs/cloud1.png",
+		Crafty.load(["imgs/cloud1.png",
 		"imgs/forky_ss.png", "imgs/burger_sheet.png", "imgs/main_title.png","imgs/play_button.png", "imgs/play_button_on.png",
 		"imgs/fireball.png", "imgs/minifork.png", "imgs/bacon2.png", "imgs/peppermint.png",
-		"imgs/onion_ss.png", "imgs/egg_ss.png", "imgs/eggbullet.png", "imgs/sky_bg.png"], function () {
+		"imgs/onion_ss.png", "imgs/egg_ss.png", "imgs/eggbullet.png", "imgs/sky_bg.png",
+		"imgs/space_bar.png","imgs/arrow_keys.png"], function () {
 			Crafty.scene("title"); //when everything is loaded, run the main scene
 		});
 
@@ -52,7 +53,7 @@ window.onload = function () {
 		Crafty.e("Title, 2D, DOM, Image, Tween").attr({ x: -300, y: -300, z: 2}).image("imgs/main_title.png")
 			.tween({x:20, y:20}, 80);
 		
-		Crafty.e("2D, DOM, Image, Mouse").attr({ x: 0, y: 350, z:10 })
+		Crafty.e("2D, DOM, Image, Mouse").attr({ x: STAGE_WIDTH/2-94, y: 350, z:10 })
 					.image("imgs/play_button.png")
 					.css({ "cursor": "pointer" })
 					.bind('MouseOver', function() {
@@ -68,8 +69,7 @@ window.onload = function () {
 					});
 					
 		sky();
-		generateClouds();
-					
+		generateClouds();					
 	});
 	
 	
@@ -95,6 +95,7 @@ window.onload = function () {
 		gameScore = 0;
 		gameScoreTxt = 0;
 		scoreTxt = Crafty.e("Score, 2D, DOM, Text").attr({x: 10, y: STAGE_HEIGHT-40, w: 300, z:20})
+						.textFont({size: '24px'})
 						.textColor('#000000')
 						.text("Score: 0")
 						.bind("EnterFrame", function () {
@@ -111,6 +112,7 @@ window.onload = function () {
 						.textColor('#000000')
 						.css({"font-size": '10px'});
 		
+		//start level 1
 		upgradeDiffcultyLvl();
 	});
     
@@ -119,7 +121,7 @@ window.onload = function () {
 function upgradeDiffcultyLvl() {
 	difficultyLvl++;
 	cornerLevelTxt.text("Level " + difficultyLvl);
-	Crafty.e("2D, DOM, Text, Tween").attr({x: STAGE_WIDTH/2, y: STAGE_HEIGHT/2, w: 500, z:20})
+	Crafty.e("2D, DOM, Text, Tween").attr({x: STAGE_WIDTH/2-20, y: STAGE_HEIGHT/2, w: 500, z:20})
 						.css({"font-size": '64px',"color":"#fff", "text-shadow":"2px 2px 20px black"})
 						.text("Level "+difficultyLvl)
 						.tween({alpha: 0}, 150)
@@ -166,11 +168,24 @@ function generateClouds() {
 }
 
 function showInstructions() {
-		Crafty.e("2D, DOM, Text, Keyboard").attr({x: 0, y: STAGE_HEIGHT/2, w: STAGE_WIDTH, z:20})
-						.textFont({family: 'Impact', size: '24px'})
+		Crafty.e("2D, DOM, Image").attr({ x: 50, y: 350, z: 5}).image("imgs/space_bar.png");
+		Crafty.e("2D, DOM, Image").attr({ x: 60, y: 150, z: 5}).image("imgs/arrow_keys.png");
+		
+		Crafty.e("2D, DOM, Text").attr({x: 500, y: 200, w: 200, z:20})
+						.textFont({family: 'Impact', size: '48px'})
 						.css({"text-align:": "center" })
 						.textColor('#000000')
-						.text("Move = Arrows, Shoot = Space")
+						.text("Move");
+		Crafty.e("2D, DOM, Text").attr({x: 70, y: 500, w: 700, z:20})
+						.textFont({family: 'Impact', size: '20px'})
+						.css({"text-align:": "center" })
+						.textColor('#000000')
+						.text("Press SPACE to start the game");
+		Crafty.e("2D, DOM, Text, Keyboard").attr({x: 500, y: 370, w: 200, z:20})
+						.textFont({family: 'Impact', size: '48px'})
+						.css({"text-align:": "center" })
+						.textColor('#000000')
+						.text("Shoot")
 						.bind('EnterFrame', function () {
 							if (this.isDown("SPACE"))
 								Crafty.scene("main");
@@ -179,21 +194,25 @@ function showInstructions() {
 }
 
 function spawnSimpleEnemy() {
-	// Crafty.e("Enemy, 2D, DOM, onion, SpriteAnimation, EnemyBase, SimpleEnemy")
-// 		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
-// 		.animate("idle", 0, 0, 4)
-// 		.animate("idle", 30, -1)
-// 		.setSpeed(1.5);
-		
 	Crafty.e("Enemy, 2D, DOM, egg, SpriteAnimation, EnemyBase, SimpleEnemy")
 		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH-20), y: -50, z: 2})		
 		.animate("idle", 0, 0, 3)
 		.animate("death", 4, 0, 8)
 		.animate("idle", 20, -1)
 		.setSpeed(1.5);
-		
+	spawnMediumEnemy();	
 		
 	simpleEnemyGen.realDelay(spawnSimpleEnemy, Crafty.math.randomInt(200, 3000));
+}
+
+function spawnMediumEnemy() {
+	Crafty.e("Enemy, 2D, DOM, onion, SpriteAnimation, EnemyBase, SimpleEnemy")
+		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -50, z: 2})		
+		.animate("idle", 0, 0, 4)
+		.animate("death", 5, 0, 9)
+		.animate("idle", 30, -1)
+		.setSpeed(1.5);
+
 }
 
 function spawnBurger() {

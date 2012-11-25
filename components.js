@@ -90,7 +90,7 @@ Crafty.c("EnemyBase", {
 						this.animate("death",50,0);
 						this.bind('AnimationEnd', function () {
 							this.destroy();
-							gameScore += 100;
+							gameScore += this.scoreForKill;
 						});					
 					}
 				}
@@ -102,6 +102,7 @@ Crafty.c("EnemyBase", {
 		this.requires("2D").requires("DOM")
 			.bind('EnterFrame' , function () {
 				if (this.y > STAGE_HEIGHT) {
+					enemiesAlive--;
 					this.destroy();
 				}
 			});
@@ -109,8 +110,11 @@ Crafty.c("EnemyBase", {
 });
 Crafty.c("SimpleEnemy", {	
 	init: function () {
+		this.requires("EnemyBase");
 		this.requires("RealDelay");
 		this.realDelay(this.fireWeapon, 1000);
+		
+		this.scoreForKill = 100;
 	},
 	
 	setSpeed: function(speed) {
