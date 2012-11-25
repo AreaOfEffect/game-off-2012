@@ -218,21 +218,17 @@ Crafty.c("OnJetpack", {
 	configMovement: function(acell, maxSpeed) {
 		this.bind('KeyDown', function () { 
 			if (this.isDown('LEFT_ARROW') || this.isDown('A')) {
-				this.movingRight = false; 
 				this.movingLeft = true;
 			}
-			else if (this.isDown('RIGHT_ARROW') || this.isDown('D')) {
+			if (this.isDown('RIGHT_ARROW') || this.isDown('D')) {
 				this.movingRight = true;	
-				this.movingLeft = false;
 			}
 			
 			if (this.isDown('UP_ARROW') || this.isDown('W')) {
 				this.movingUp = true;
-				this.movingDown = false;
 			}
-			else if (this.isDown('DOWN_ARROW') || this.isDown('S')) {
+			if (this.isDown('DOWN_ARROW') || this.isDown('S')) {
 				this.movingDown = true;
-				this.movingUp = false;
 			}
 		});
 		
