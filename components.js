@@ -124,8 +124,8 @@ Crafty.c("SimpleEnemy", {
 		Crafty.e("Bullet, 2D, DOM, eggbullet, SpriteAnimation, StraightBullets, HurtForky")
 				.animate("go", 0, 0, 4)
 				.animate("go", 20, -1)
-				.attr({ x: this.x, y: this.y, z: 4})
-				.setSpeed(0,5,2)
+				.attr({ x: this.x+(this.w/2), y: this.y+(this.h/2), z: 4, rotation: Crafty.math.randomInt(0, 360)})
+				.setSpeed(0,5,Crafty.math.randomInt(1, 5))
 				.origin("center");
 		this.realDelay(this.fireWeapon, 1000);
 	}
