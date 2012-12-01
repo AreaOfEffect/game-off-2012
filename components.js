@@ -51,10 +51,11 @@ Crafty.c("LockingMissles", {
 			else
 				this.speedX -= this.sluggishSpeed;
 			
-			if (forky.attr('y') > this.y)
-				this.speedY += this.sluggishSpeed;
-			else
-				this.speedY -= this.sluggishSpeed;
+			// bullets won't come back from bottom of screen
+			// if (forky.attr('y') > this.y)
+// 				this.speedY += this.sluggishSpeed;
+// 			else
+// 				this.speedY -= this.sluggishSpeed;
 			
 			if (this.speedX > this.maxSpeed)
 				this.speedX = this.maxSpeed;
@@ -84,7 +85,7 @@ Crafty.c("EnemyBase", {
 					createFireball(fork.x-25,fork.y-25);
 					//destroy fork bullet
 					fork.destroy()
-					this.health -= 50;
+					this.health -= forkDamage;
 					if (this.health <= 0) {
 						enemiesAlive--;
 						this.animate("death",50,0);
@@ -112,7 +113,7 @@ Crafty.c("SimpleEnemy", {
 	init: function () {
 		this.requires("EnemyBase");
 		this.requires("RealDelay");
-		this.realDelay(this.fireWeapon, 1000);
+		this.realDelay(this.fireWeapon, 3000);
 		
 		this.scoreForKill = 100;
 	},
@@ -131,10 +132,61 @@ Crafty.c("SimpleEnemy", {
 				.attr({ x: this.x+(this.w/2), y: this.y+(this.h/2), z: 4, rotation: Crafty.math.randomInt(0, 360)})
 				.setSpeed(0,5,Crafty.math.randomInt(1, 5))
 				.origin("center");
+		this.realDelay(this.fireWeapon, 3000);
+	}
+});
+Crafty.c("MediumEnemy", {
+	init: function () {
+		this.requires("EnemyBase");
+		this.requires("RealDelay");
+		this.realDelay(this.blink, Crafty.math.randomInt(3000, 5000));
+		
+		this.scoreForKill = 200;
+	},
+	setSpeed: function(speed) {
+		this.bind('EnterFrame', function () {
+			this.y += speed;
+		});
+		return this;
+	},
+	blink: function () {
+		this.animate("blink", 30, 0);
+		this.bind("AnimationEnd", function() {
+			this.animate("idle", 30, 0);
+		});
+		this.realDelay(this.blink, Crafty.math.randomInt(3000, 5000));
+	}
+
+});
+Crafty.c("HardEnemy", {	
+	init: function () {
+		this.requires("EnemyBase");
+		this.requires("RealDelay");
+		this.realDelay(this.fireWeapon, 1000);
+		
+		this.scoreForKill = 300;
+		
+		this.yStop = Crafty.math.randomInt(50, STAGE_HEIGHT/2-100);
+	},
+	
+	setSpeed: function(speed) {
+		this.bind('EnterFrame', function () {
+			if (this.y < this.yStop)
+				this.y += speed;
+		});
+		return this;
+	},
+	
+	fireWeapon: function() {
+		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets, HurtForky")
+				.image("imgs/icecube.png")
+				.attr({ x: this.x+(this.w/2), y: this.y+(this.h/2), z: 4, rotation: Crafty.math.randomInt(0, 360)})
+				.setSpeed(0,5,Crafty.math.randomInt(1, 5))
+				.origin("center");
 		this.realDelay(this.fireWeapon, 1000);
 	}
 });
-Crafty.c("RandomMover", {
+Crafty.c("Boss", {
 	init: function () {
 		this.requires("RealDelay");
 		this.requires("Tween");
@@ -145,10 +197,13 @@ Crafty.c("RandomMover", {
 		this.bind("TweenEnd", function () {
 			this.realDelay(this.fireWeapon, 100);
 		});
+		
+		this.requires("EnemyBase");
+		this.scoreForKill = 1000;
 	},
 	
 	nextLocation: function() {
-		this.tween({x: Crafty.math.randomInt(10, STAGE_WIDTH), y: Crafty.math.randomInt(10, STAGE_HEIGHT/2)}, 40);
+		this.tween({x: Crafty.math.randomInt(50, STAGE_WIDTH), y: Crafty.math.randomInt(10, STAGE_HEIGHT/2-100)}, 40);
 		this.realDelay(this.nextLocation, 3000);		
 	},
 	
@@ -157,19 +212,16 @@ Crafty.c("RandomMover", {
 		Crafty.e("Bullet, 2D, DOM, firebacon, SpriteAnimation, LockingMissles")
 				.attr({ x: this.x, y: this.y, z: 4})
 				.animate("baconani", 0, 0, 3)
-				.animate("baconani", 3, 0, 0)
 				.animate("baconani", 20, -1)
 				.setSpeed(0,5);
 		Crafty.e("Bullet, 2D, DOM, firebacon, SpriteAnimation, LockingMissles")
 				.attr({ x: this.x, y: this.y, z: 4})
 				.animate("baconani", 0, 0, 3)
-				.animate("baconani", 3, 0, 0)
 				.animate("baconani", 20, -1)
 				.setSpeed(2,5);
 		Crafty.e("Bullet, 2D, DOM, firebacon, SpriteAnimation, LockingMissles")
 				.attr({ x: this.x, y: this.y, z: 4})
 				.animate("baconani", 0, 0, 3)
-				.animate("baconani", 3, 0, 0)
 				.animate("baconani", 20, -1)
 				.setSpeed(-2,5);
 	}
@@ -182,14 +234,9 @@ Crafty.c("ForkyBase", {
 	bulletSpeed: 3,
 	init: function () {
 		this.canFire = true;
-		this.fireTimeout = 50;
+		this.fireTimeout = 200;
 		
-		this.requires("2D").requires("DOM").requires("forkysprite").requires("SpriteAnimation").requires("OnJetpack").requires("Keyboard").requires("RealDelay")
-			.attr({ x: 580, y: 100, z: 2})
-			.animate("idle", 0, 0, 4)
-			.animate("lean", 4, 0, 7)
-			.animate("idle", 20, -1)
-			.configMovement(0.1,10)
+		this.requires("OnJetpack").requires("Keyboard").requires("RealDelay")
 			.bind('EnterFrame', function () {
 				if (this.isDown("SPACE") && this.canFire) {
 					this.canFire = false;
@@ -197,8 +244,16 @@ Crafty.c("ForkyBase", {
 					this.fireBaseWeapon();
 				}
 			});
+		this.realDelay(this.blink, Crafty.math.randomInt(3000, 5000));
+		
 	},
-	
+	blink: function () {
+		this.animate("blink", 30, 0);
+		this.bind("AnimationEnd", function() {
+			this.animate("idle", 30, 0);
+		});
+		this.realDelay(this.blink, Crafty.math.randomInt(3000, 5000));
+	},
 	fireBaseWeapon: function() {
 		Crafty.e("ForkyBullet, 2D, DOM, Image, StraightBullets")
 				.image("imgs/minifork.png")
@@ -257,21 +312,11 @@ Crafty.c("OnJetpack", {
 		this.bind('EnterFrame', function () {
 			if (this.movingLeft) {
 				this.speedX -= acell;
-				
-				// leaning animation
-				// if (!this.isPlaying("lean")) {
-// 					this.stop();
-// 					this.animate("lean",20,0);
-// 				}
+			
 			}
 			else if (this.movingRight) {
 				this.speedX += acell;
 				
-				// leaning
-				// if (!this.isPlaying("lean")) {
-// 					this.stop();
-// 					this.animate("lean",20,0);
-// 				}
 			}
 			else {
 				if (this.speedX < 0) {
@@ -284,10 +329,6 @@ Crafty.c("OnJetpack", {
 						this.speedX -= acell;
 					else
 						this.speedX = 0;
-				}
-				if (!this.isPlaying("idle")) {
-					this.stop();
-					this.animate("idle",20,-1);		
 				}
 			}
 			
@@ -311,8 +352,12 @@ Crafty.c("OnJetpack", {
 			
 			if (this.speedX > maxSpeed)
 				this.speedX = maxSpeed;
+			if (this.speedX < -maxSpeed)
+				this.speedX = -maxSpeed;
 			if (this.speedY > maxSpeed)
 				this.speedY = maxSpeed;
+			if (this.speedY < -maxSpeed)
+				this.speedY = -maxSpeed;
 			
 			this.x += this.speedX;
 			this.y += this.speedY;
