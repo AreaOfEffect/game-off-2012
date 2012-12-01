@@ -22,6 +22,7 @@ window.onload = function () {
 	Crafty.sprite(100,82, "imgs/peppermint_glow.png", {peppermint:[0,0]});
 	Crafty.sprite(120,144, "imgs/drink.png", {drink:[0,0]});
 	Crafty.sprite(50,125, "imgs/forky_life.png", {oneup:[0,0]});
+	Crafty.sprite(200,171, "imgs/drink_death.png", {drinkdeath:[0,0]});
 	
 	
 	
@@ -37,7 +38,8 @@ window.onload = function () {
 		"imgs/fireball.png", "imgs/minifork.png", "imgs/bacon2.png", "imgs/peppermint.png",
 		"imgs/onion_ss.png", "imgs/egg_ss.png", "imgs/eggbullet.png", "imgs/sky_bg.png",
 		"imgs/space_bar.png","imgs/arrow_keys.png","imgs/icecube.png","imgs/drink.png",
-		"imgs/rainbow_starburst.png", "imgs/onion_peel.png", "imgs/forky_life.png", "imgs/forky_life_little.png"], function () {
+		"imgs/rainbow_starburst.png", "imgs/onion_peel.png", "imgs/forky_life.png", "imgs/forky_life_little.png",
+		"imgs/drink_death.png"], function () {
 			Crafty.scene("title"); //when everything is loaded, run the main scene
 		});
 
@@ -133,11 +135,11 @@ window.onload = function () {
 						.text("Score: 0")
 						.bind("EnterFrame", function () {
 							if (gameScore > gameScoreTxt) {
-								if (gameScore - gameScoreTxt > 10)
-									gameScoreTxt += 10;
-								else 
-									gameScoreTxt += (gameScore - gameScoreTxt);
-								
+							if (gameScore - gameScoreTxt > 10)
+ 									gameScoreTxt += 10;
+ 								else 
+ 									gameScoreTxt += (gameScore - gameScoreTxt);
+								console.log(gameScore);
 								this.text("Score: " + gameScoreTxt);
 							}
 						});
@@ -274,7 +276,7 @@ function spawnMediumEnemy() {
 		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -Crafty.math.randomInt(50, 500), z: 2})		
 		.animate("idle", 0, 0, 0)
 		.animate("blink", 0, 0, 8)
-		.animate("death", 8, 0, 5)
+		.animate("death", 8, 0, 13)
 		.animate("idle", 30, -1)
 		.setSpeed(0.5);
 
@@ -295,45 +297,45 @@ function spawnBurger() {
 	Crafty.e("Enemy, 2D, DOM, burg, SpriteAnimation, Boss")
 		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -100, z: 2})		
 		.animate("burger", 0, 0, 22)
-		.animate("death", 0, 0, 22)
 		.animate("burger", 60, -1);
 }
 
 function spawnPowerup() {
-	var rand = Crafty.math.randomInt(0,10);
-	if (rand != 5) {
-		Crafty.e("Powerup, 2D, DOM, peppermint, SpriteAnimation, Collision")
-					.animate("spin", 0 , 0, 13)
-					.animate("spin", 40, -1)
-					.attr({ x: Crafty.math.randomInt(50, STAGE_WIDTH-50), y: -50, z: 2})
-					.bind("EnterFrame", function () {
-						this.y += 5;
-						if (this.y > STAGE_HEIGHT)
+	if (lifeCounter > 0 ) {
+		var rand = Crafty.math.randomInt(0,10);
+		if (rand != 5) {
+			Crafty.e("Powerup, 2D, DOM, peppermint, SpriteAnimation, Collision")
+						.animate("spin", 0 , 0, 13)
+						.animate("spin", 40, -1)
+						.attr({ x: Crafty.math.randomInt(50, STAGE_WIDTH-50), y: -50, z: 2})
+						.bind("EnterFrame", function () {
+							this.y += 5;
+							if (this.y > STAGE_HEIGHT)
+								this.destroy();
+						})
+						.onHit("Forky", function() {
+							rainbowStarburst();
+							gameScore += 2000;
 							this.destroy();
-					})
-					.onHit("Forky", function() {
-						rainbowStarburst();
-						gameScore += 2000;
-						this.destroy();
-					});
-	} else {
-		Crafty.e("NewLife, 2D, DOM, oneup, SpriteAnimation, Collision")
-					.animate("go", 0 , 0, 3)
-					.animate("go", 40, -1)
-					.attr({ x: Crafty.math.randomInt(50, STAGE_WIDTH-50), y: -50, z: 2})
-					.bind("EnterFrame", function () {
-						this.y += 5;
-						if (this.y > STAGE_HEIGHT)
+						});
+		} else {
+			Crafty.e("NewLife, 2D, DOM, oneup, SpriteAnimation, Collision")
+						.animate("go", 0 , 0, 3)
+						.animate("go", 40, -1)
+						.attr({ x: Crafty.math.randomInt(50, STAGE_WIDTH-50), y: -50, z: 2})
+						.bind("EnterFrame", function () {
+							this.y += 5;
+							if (this.y > STAGE_HEIGHT)
+								this.destroy();
+						})
+						.onHit("Forky", function() {
+							rainbowStarburst();
 							this.destroy();
-					})
-					.onHit("Forky", function() {
-						rainbowStarburst();
-						this.destroy();
-						lifePlus();
-					});
-	}
-	if (lifeCounter > 0 )
+							lifePlus();
+						});
+		}
 		powerUpGen.realDelay(spawnPowerup, Crafty.math.randomInt(5000,20000));
+	}
 }
 function rainbowStarburst() {
 	Crafty.e("2D, DOM, Tween, Image")

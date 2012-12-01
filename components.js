@@ -89,12 +89,7 @@ Crafty.c("EnemyBase", {
 					this.health -= forkDamage;
 					if (this.health <= 0) {
 						enemiesAlive--;
-						this.stop();
-						this.animate("death",50,0);
-						this.bind('AnimationEnd', function () {
-							this.destroy();
-							gameScore += this.scoreForKill;
-						});					
+						this.death();			
 					}
 				}
 			})
@@ -135,6 +130,14 @@ Crafty.c("SimpleEnemy", {
 				.setSpeed(0,5,Crafty.math.randomInt(1, 5))
 				.origin("center");
 		this.realDelay(this.fireWeapon, 3000);
+	},
+	death: function () {
+		this.stop();
+		this.animate("death",50,0);
+		this.bind('AnimationEnd', function () {
+			this.destroy();
+			gameScore += this.scoreForKill;
+		});		
 	}
 });
 Crafty.c("MediumEnemy", {
@@ -166,6 +169,14 @@ Crafty.c("MediumEnemy", {
 				.setSpeed(0,5,Crafty.math.randomInt(1, 5))
 				.origin("center");
 		this.realDelay(this.fireWeapon, 3000);
+	},
+	death: function () {
+		this.stop();
+		this.animate("death",50,0);
+		this.bind('AnimationEnd', function () {
+			this.destroy();
+			gameScore += this.scoreForKill;
+		});		
 	}
 
 });
@@ -202,6 +213,17 @@ Crafty.c("HardEnemy", {
 				.setSpeed(0,5,Crafty.math.randomInt(1, 5))
 				.origin("center");
 		this.realDelay(this.fireWeapon, 2500);
+	},
+	death: function() {
+		Crafty.e("2D, DOM, drinkdeath, SpriteAnimation")
+			.attr({x: this.x, y:this.y, z: 20})
+			.animate("go", 0, 0, 2)
+			.animate("go",30, 0)
+			.bind('AnimationEnd', function () {
+							this.destroy();
+							gameScore += this.scoreForKill;
+			});		
+		this.destroy();
 	}
 });
 Crafty.c("Boss", {
@@ -242,6 +264,14 @@ Crafty.c("Boss", {
 				.animate("baconani", 0, 0, 3)
 				.animate("baconani", 20, -1)
 				.setSpeed(-2,5);
+	},
+	death: function () {
+		this.tween({alpha: 0},30);
+		this.bind("TweenEnd", function () {
+			this.destroy();
+			gameScore += this.scoreForKill;
+		});
+	
 	}
 	
 });
