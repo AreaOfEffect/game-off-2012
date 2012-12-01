@@ -17,10 +17,11 @@ window.onload = function () {
 	Crafty.sprite(120, "imgs/burger_sheet.png", {burg:[0,0]});
 	Crafty.sprite(100,91, "imgs/egg_ss.png", {egg:[0,0]});
 	Crafty.sprite(30,38, "imgs/eggbullet.png", {eggbullet:[0,0]});
-	Crafty.sprite(80,71, "imgs/onion_ss.png", {onion:[0,0]});
+	Crafty.sprite(150,99, "imgs/onion_ss.png", {onion:[0,0]});
 	Crafty.sprite(100, "imgs/fireball.png", {fireball:[0,0]});
 	Crafty.sprite(100,82, "imgs/peppermint_glow.png", {peppermint:[0,0]});
 	Crafty.sprite(120,144, "imgs/drink.png", {drink:[0,0]});
+	Crafty.sprite(50,125, "imgs/forky_life.png", {oneup:[0,0]});
 	
 	
 	
@@ -36,7 +37,7 @@ window.onload = function () {
 		"imgs/fireball.png", "imgs/minifork.png", "imgs/bacon2.png", "imgs/peppermint.png",
 		"imgs/onion_ss.png", "imgs/egg_ss.png", "imgs/eggbullet.png", "imgs/sky_bg.png",
 		"imgs/space_bar.png","imgs/arrow_keys.png","imgs/icecube.png","imgs/drink.png",
-		"imgs/rainbow_starburst.png", "imgs/onion_peel.png"], function () {
+		"imgs/rainbow_starburst.png", "imgs/onion_peel.png", "imgs/forky_life.png", "imgs/forky_life_little.png"], function () {
 			Crafty.scene("title"); //when everything is loaded, run the main scene
 		});
 
@@ -74,6 +75,18 @@ window.onload = function () {
 		generateClouds();					
 	});
 	
+	//GAME OVER
+	Crafty.scene("gameover", function () {
+	
+		Crafty.e("2D, DOM, Text, Tween, RealDelay").attr({x: STAGE_WIDTH/2-20, y: STAGE_HEIGHT/2, w: 500, z:20})
+						.css({"font-size": '64px',"color":"#fff", "text-shadow":"2px 2px 20px black"})
+						.text("GAME OVER")
+						.tween({alpha: 0}, 300)
+						.bind("TweenEnd", function () {
+							Crafty.scene("title");
+						});
+	});
+	
 	
 
 	//MAIN GAME
@@ -83,7 +96,8 @@ window.onload = function () {
 		enemiesAlive = 0;
 		
 		enemiesPerWave = 2;
-		forkDamage = 100;
+		forkDamage = 200;
+		
 		
 		sky();
 		generateClouds();
@@ -248,9 +262,9 @@ function spawnSimpleEnemy() {
 function spawnMediumEnemy() {
 	Crafty.e("Enemy, 2D, DOM, onion, SpriteAnimation, MediumEnemy")
 		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -Crafty.math.randomInt(50, 500), z: 2})		
-		.animate("idle", 4, 0, 0)
-		.animate("blink", 0, 0, 4)
-		.animate("death", 5, 0, 9)
+		.animate("idle", 0, 0, 0)
+		.animate("blink", 0, 0, 8)
+		.animate("death", 8, 0, 13)
 		.animate("idle", 30, -1)
 		.setSpeed(0.5);
 
@@ -258,9 +272,9 @@ function spawnMediumEnemy() {
 
 function spawnHardEnemy() {
 	Crafty.e("Enemy, 2D, DOM, drink, SpriteAnimation, HardEnemy")
-		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH-20), y: -Crafty.math.randomInt(50, 500), z: 2})		
-		.animate("idle", 0, 0, 9)
-		.animate("death", 0, 0, 9)
+		.attr({ x: Crafty.math.randomInt(50, STAGE_WIDTH-50), y: -Crafty.math.randomInt(50, 500), z: 2})		
+		.animate("idle", 0, 0, 0)
+		.animate("blink", 0, 0, 9)
 		.animate("idle", 70, -1)
 		.setSpeed(3);
 
@@ -276,19 +290,36 @@ function spawnBurger() {
 }
 
 function spawnPowerup() {
-	Crafty.e("Powerup, 2D, DOM, peppermint, SpriteAnimation, Collision")
-				.animate("spin", 0 , 0, 13)
-				.animate("spin", 40, -1)
-				.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH-20), y: -50, z: 2})
-				.bind("EnterFrame", function () {
-					this.y += 5;
-					if (this.y > STAGE_HEIGHT)
+	var rand = Crafty.math.randomInt(0,10);
+	if (rand != 5) {
+		Crafty.e("Powerup, 2D, DOM, peppermint, SpriteAnimation, Collision")
+					.animate("spin", 0 , 0, 13)
+					.animate("spin", 40, -1)
+					.attr({ x: Crafty.math.randomInt(50, STAGE_WIDTH-50), y: -50, z: 2})
+					.bind("EnterFrame", function () {
+						this.y += 5;
+						if (this.y > STAGE_HEIGHT)
+							this.destroy();
+					})
+					.onHit("Forky", function() {
+						rainbowStarburst();
 						this.destroy();
-				})
-				.onHit("Forky", function() {
-					rainbowStarburst();
-					this.destroy();
-				});
+					});
+	} else {
+		Crafty.e("NewLife, 2D, DOM, oneup, SpriteAnimation, Collision")
+					.animate("go", 0 , 0, 3)
+					.animate("go", 40, -1)
+					.attr({ x: Crafty.math.randomInt(50, STAGE_WIDTH-50), y: -50, z: 2})
+					.bind("EnterFrame", function () {
+						this.y += 5;
+						if (this.y > STAGE_HEIGHT)
+							this.destroy();
+					})
+					.onHit("Forky", function() {
+						rainbowStarburst();
+						this.destroy();
+					});
+	}
 	powerUpGen.realDelay(spawnPowerup, Crafty.math.randomInt(1000,5000));
 }
 function rainbowStarburst() {
