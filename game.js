@@ -82,7 +82,7 @@ window.onload = function () {
 		generateClouds();
 		Crafty.e("2D, DOM, Text, Tween, RealDelay").attr({x: STAGE_WIDTH/2-30, y: STAGE_HEIGHT/2, w: 500, z:20})
 						.css({"font-size": '64px',"color":"#fff", "text-shadow":"2px 2px 20px black"})
-						.text("GAME OVER)
+						.text("GAME OVER")
 						.tween({alpha: 0}, 300)
 						.bind("TweenEnd", function () {
 							Crafty.scene("title");
@@ -116,13 +116,13 @@ window.onload = function () {
 			.animate("idle", 0, 0, 0)
 			.animate("blink", 0, 0, 4)
 			.animate("idle", 20, -1)
-			.configMovement(1,10);
+			.configMovement(0.5,10);
 				
 		 simpleEnemyGen = Crafty.e("SimpleEnemyFactory, RealDelay");
  			simpleEnemyGen.realDelay(spawnEnemies, 3000);
 		
 		powerUpGen = Crafty.e("PowerupFactory, RealDelay");
-			powerUpGen.realDelay(spawnPowerup, Crafty.math.randomInt(1000,5000));
+			powerUpGen.realDelay(spawnPowerup, Crafty.math.randomInt(5000,20000));
 		
 		// HUD	
 		gameScore = 0;
@@ -274,7 +274,7 @@ function spawnMediumEnemy() {
 		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -Crafty.math.randomInt(50, 500), z: 2})		
 		.animate("idle", 0, 0, 0)
 		.animate("blink", 0, 0, 8)
-		.animate("death", 8, 0, 13)
+		.animate("death", 8, 0, 5)
 		.animate("idle", 30, -1)
 		.setSpeed(0.5);
 
@@ -313,6 +313,7 @@ function spawnPowerup() {
 					})
 					.onHit("Forky", function() {
 						rainbowStarburst();
+						gameScore += 2000;
 						this.destroy();
 					});
 	} else {
@@ -332,7 +333,7 @@ function spawnPowerup() {
 					});
 	}
 	if (lifeCounter > 0 )
-		powerUpGen.realDelay(spawnPowerup, Crafty.math.randomInt(1000,5000));
+		powerUpGen.realDelay(spawnPowerup, Crafty.math.randomInt(5000,20000));
 }
 function rainbowStarburst() {
 	Crafty.e("2D, DOM, Tween, Image")

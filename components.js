@@ -89,6 +89,7 @@ Crafty.c("EnemyBase", {
 					this.health -= forkDamage;
 					if (this.health <= 0) {
 						enemiesAlive--;
+						this.stop();
 						this.animate("death",50,0);
 						this.bind('AnimationEnd', function () {
 							this.destroy();
