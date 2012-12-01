@@ -36,7 +36,7 @@ window.onload = function () {
 		"imgs/fireball.png", "imgs/minifork.png", "imgs/bacon2.png", "imgs/peppermint.png",
 		"imgs/onion_ss.png", "imgs/egg_ss.png", "imgs/eggbullet.png", "imgs/sky_bg.png",
 		"imgs/space_bar.png","imgs/arrow_keys.png","imgs/icecube.png","imgs/drink.png",
-		"imgs/rainbow_starburst.png"], function () {
+		"imgs/rainbow_starburst.png", "imgs/onion_peel.png"], function () {
 			Crafty.scene("title"); //when everything is loaded, run the main scene
 		});
 

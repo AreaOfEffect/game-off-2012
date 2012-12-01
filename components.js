@@ -140,6 +140,7 @@ Crafty.c("MediumEnemy", {
 		this.requires("EnemyBase");
 		this.requires("RealDelay");
 		this.realDelay(this.blink, Crafty.math.randomInt(3000, 5000));
+		this.realDelay(this.fireWeapon, 3000);
 		
 		this.scoreForKill = 200;
 	},
@@ -155,6 +156,14 @@ Crafty.c("MediumEnemy", {
 			this.animate("idle", 30, 0);
 		});
 		this.realDelay(this.blink, Crafty.math.randomInt(3000, 5000));
+	},
+	fireWeapon: function() {
+		Crafty.e("Bullet, 2D, DOM, Image, StraightBullets, HurtForky")
+				.image("imgs/onion_peel.png")
+				.attr({ x: this.x+(this.w/2), y: this.y+(this.h/2), z: 4, rotation: Crafty.math.randomInt(0, 360)})
+				.setSpeed(0,5,Crafty.math.randomInt(1, 5))
+				.origin("center");
+		this.realDelay(this.fireWeapon, 3000);
 	}
 
 });
