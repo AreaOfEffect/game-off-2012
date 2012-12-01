@@ -220,9 +220,9 @@ Crafty.c("HardEnemy", {
 			.animate("go", 0, 0, 2)
 			.animate("go",30, 0)
 			.bind('AnimationEnd', function () {
-							this.destroy();
-							gameScore += this.scoreForKill;
+							this.destroy();							
 			});		
+		gameScore += this.scoreForKill;
 		this.destroy();
 	}
 });

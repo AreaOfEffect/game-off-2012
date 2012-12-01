@@ -135,11 +135,10 @@ window.onload = function () {
 						.text("Score: 0")
 						.bind("EnterFrame", function () {
 							if (gameScore > gameScoreTxt) {
-							if (gameScore - gameScoreTxt > 10)
+								if (gameScore - gameScoreTxt > 10)
  									gameScoreTxt += 10;
  								else 
  									gameScoreTxt += (gameScore - gameScoreTxt);
-								console.log(gameScore);
 								this.text("Score: " + gameScoreTxt);
 							}
 						});
@@ -263,7 +262,7 @@ function showInstructions() {
 
 function spawnSimpleEnemy() {
 	Crafty.e("Enemy, 2D, DOM, egg, SpriteAnimation, SimpleEnemy")
-		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH-20), y: -Crafty.math.randomInt(50, 500), z: 2})		
+		.attr({ x: Crafty.math.randomInt(50, STAGE_WIDTH-50), y: -Crafty.math.randomInt(50, 500), z: 2})		
 		.animate("idle", 0, 0, 3)
 		.animate("death", 4, 0, 8)
 		.animate("idle", 20, -1)
@@ -273,7 +272,7 @@ function spawnSimpleEnemy() {
 
 function spawnMediumEnemy() {
 	Crafty.e("Enemy, 2D, DOM, onion, SpriteAnimation, MediumEnemy")
-		.attr({ x: Crafty.math.randomInt(20, STAGE_WIDTH), y: -Crafty.math.randomInt(50, 500), z: 2})		
+		.attr({ x: Crafty.math.randomInt(50, STAGE_WIDTH-50), y: -Crafty.math.randomInt(50, 500), z: 2})		
 		.animate("idle", 0, 0, 0)
 		.animate("blink", 0, 0, 8)
 		.animate("death", 8, 0, 13)
