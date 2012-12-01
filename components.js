@@ -16,6 +16,7 @@ Crafty.c("HurtForky" , {
 			.onHit("Forky", function() {
 				createFireball(this.x-50, this.y-50);
 				this.destroy();
+				lifeMinus();
 			});
 	}
 });
@@ -97,7 +98,7 @@ Crafty.c("EnemyBase", {
 				}
 			})
 			.onHit("Forky", function() {
-				console.log("ouch, bullet");
+				lifeMinus();
 			});
 		
 		this.requires("2D").requires("DOM")

@@ -1,4 +1,4 @@
-function lifeCounter(){
+function lifeCounterInit(){
 
 // HUD	
 		lifeCounter = 5;

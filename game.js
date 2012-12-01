@@ -77,10 +77,19 @@ window.onload = function () {
 	
 	//GAME OVER
 	Crafty.scene("gameover", function () {
-	
-		Crafty.e("2D, DOM, Text, Tween, RealDelay").attr({x: STAGE_WIDTH/2-20, y: STAGE_HEIGHT/2, w: 500, z:20})
+		
+		sky();
+		generateClouds();
+		Crafty.e("2D, DOM, Text, Tween, RealDelay").attr({x: STAGE_WIDTH/2-30, y: STAGE_HEIGHT/2, w: 500, z:20})
 						.css({"font-size": '64px',"color":"#fff", "text-shadow":"2px 2px 20px black"})
-						.text("GAME OVER")
+						.text("GAME OVER)
+						.tween({alpha: 0}, 300)
+						.bind("TweenEnd", function () {
+							Crafty.scene("title");
+						});
+		Crafty.e("2D, DOM, Text, Tween, RealDelay").attr({x: STAGE_WIDTH/2-30, y: STAGE_HEIGHT/2+40, w: 500, z:20})
+						.css({"font-size": '64px',"color":"#fff", "text-shadow":"2px 2px 20px black"})
+						.text("Score: "+ gameScore)
 						.tween({alpha: 0}, 300)
 						.bind("TweenEnd", function () {
 							Crafty.scene("title");
@@ -135,6 +144,7 @@ window.onload = function () {
 		cornerLevelTxt = Crafty.e("cornerLevel, 2D, DOM, Text").attr({x: 10, y: 10, w: 300, z:20})
 						.textColor('#000000')
 						.css({"font-size": '10px'});
+		lifeCounterInit();
 		
 		//start level 1
 		upgradeDiffcultyLvl();
@@ -318,9 +328,11 @@ function spawnPowerup() {
 					.onHit("Forky", function() {
 						rainbowStarburst();
 						this.destroy();
+						lifePlus();
 					});
 	}
-	powerUpGen.realDelay(spawnPowerup, Crafty.math.randomInt(1000,5000));
+	if (lifeCounter > 0 )
+		powerUpGen.realDelay(spawnPowerup, Crafty.math.randomInt(1000,5000));
 }
 function rainbowStarburst() {
 	Crafty.e("2D, DOM, Tween, Image")
@@ -338,4 +350,15 @@ function rainbowStarburst() {
 			this.x = forky.attr('x')-110;
 			this.y = forky.attr('y')-150;
 		});
+}
+
+function lifeMinus() {
+	lifeCounter--;
+	scoreTxt.text("x" + lifeCounter);
+	if (lifeCounter <= 0)
+		Crafty.scene("gameover");
+}
+function lifePlus() {
+	lifeCounter++;
+	scoreTxt.text("x" + lifeCounter);
 }
