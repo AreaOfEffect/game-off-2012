@@ -11,3 +11,12 @@ The candy of FoodLand-equally mistreated by the 'normal' food citizens due to th
 ally with Forky in his journey. Look for the peppermint power-ups for special abilities!
 
 [Play Forky's Revenge](http://tikalnetwork.com/game-off-2012/)
+
+Framework used: Crafty JS
+
+Screens:
+
+<img src="http://tikalnetwork.com/game-off-2012/imgs/screenshots/1.png">
+<img src="http://tikalnetwork.com/game-off-2012/imgs/screenshots/2.png">
+<img src="http://tikalnetwork.com/game-off-2012/imgs/screenshots/3.png">
+<img src="http://tikalnetwork.com/game-off-2012/imgs/screenshots/4.png">
